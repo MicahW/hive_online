@@ -1,3 +1,56 @@
 // Place all the styles related to the Static_Pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+img.side {
+	width: 100%;
+	border: solid;
+	border-color: #404040;
+}
+
+
+iframe.front_text {
+	width: 100%;
+}
+
+ul.we_are {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #ff4000;
+	text-align: center;
+	border-radius: 20px;
+}
+
+ul.we_are li {
+	border-bottom: solid;
+	border-bottom-color: #404040;
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
+
+.no_lower {
+	border-bottom: none !important;
+}
+
+p.header {
+	border-radius: 20px;
+	background-color: #404040;
+	text-align: center;
+	font-size: 30px;
+	padding: 14px;
+	margin: 5px;
+}
+
+p.main_text {
+	text-indent: 30px;
+}
+
+
+@media screen and (max-width: 600px){
+	ul.we_are {
+		display: none;
+	}
+}
+

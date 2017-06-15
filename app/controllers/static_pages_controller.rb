@@ -1,6 +1,5 @@
 class StaticPagesController < ApplicationController
-  
-  
+
   
   def home
     @hash = Hash.new("")

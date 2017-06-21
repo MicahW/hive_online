@@ -4,7 +4,7 @@
 	<li class="left_side"><a class="top_bar" href="fail">Take Survey</a></li>
 	<li class="left_side"><%= link_to "Contact", contact_path, id: @hash[:contact] %></li>
 	<% if logged_in? %>
-		<li class="right_side"> <%= link_to "Logout", login_path, id: "" %> </li>
+		<li class="right_side"> <%= link_to "Logout", logout_path, method: :delete, id: "" %> </li>
 	<% else %>
 		<li class="right_side"> <%= link_to "Login", login_path, id: @hash[:login] %> </li>
 	<% end %>

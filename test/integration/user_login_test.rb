@@ -6,6 +6,18 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     @user = users(:michael)
   end
   
+  test "colors" do
+    get root_path
+    assert_select "ul", {:class => "orange"}
+    post login_path, params: { session: { email:    @user.email,
+                                          password: 'password' } }
+    assert is_logged_in?
+    follow_redirect!
+    assert_select "ul", {:class => "purple"}
+  end
+
+    
+  
   test "login with valid information followed by logout" do
     get login_path
     post login_path, params: { session: { email:    @user.email,

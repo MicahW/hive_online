@@ -1,5 +1,19 @@
-
-  <div class="user_info">
+<div class = "row">
+  <div class= "col-2 user_info">
 	  <h1><%= @user.name %></h1>
-        <%= gravatar_for @user %>      
-  <div>
+        <%= gravatar_for @user %>    
+  </div>
+  <div class = "colo-4 user_info">
+    <h3> Change Header Color </h3>
+    <%= form_for(@user) do |f| %>
+    <%= f.radio_button(:color, "orange") %>
+    <%= f.label(:orange, "Orange") %>
+    <%= f.radio_button(:color, "purple") %>
+    <%= f.label(:purple, "Purple") %>
+    <%= f.radio_button(:color, "red") %>
+    <%= f.label(:red, "Red") %>
+    <%= f.submit "Save changes", class: "btn btn-primary" %>
+    <% end %>
+
+  </div>
+</div>

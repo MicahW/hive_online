@@ -4,7 +4,8 @@ module ApplicationHelper
       @cur = current_user
       color = @cur.read_attribute :color
     else
-      "orange"
+      color = "orange"
     end
+    "top_bar " + color
   end
 end

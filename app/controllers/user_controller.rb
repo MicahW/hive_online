@@ -20,7 +20,15 @@ class UserController < ApplicationController
       render 'new'
     end
   end
-
+  
+  def update
+    color = params[:user][:color]
+    @user = user = User.find_by(id: params[:id])
+    @user.update_attribute(:color, color)
+    @hash = Hash.new("")
+    render 'show'
+  end
+ 
   private
 
     def user_params

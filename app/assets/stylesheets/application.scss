@@ -1,0 +1,119 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+$orange: #ff4000;
+$red: #ff1a1a;
+$purple: #751aff;
+
+* {
+    box-sizing: border-box;
+}
+
+
+
+html {
+    font-family: "Lucida Sans", sans-serif;
+}
+
+body {
+	background-color: #b3b3b3;
+	color: #262626
+}
+
+ul.top_bar {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.orange {
+	background-color: $orange;
+}
+
+.red {
+    background-color: $red;
+}
+   
+.purple {
+    background-color: $purple;
+}
+
+	
+	
+	
+
+li.left_side {
+	float: left;
+}
+
+li.right_side {
+	float: right;
+}
+
+li a {
+	display: block;
+	color: black;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+#active {
+	background-color: #4d4dff;
+}
+
+li a:hover:not(#active) {
+	background-color: #803300;
+	color: #8c8c8c;
+}
+
+.row::after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+[class*="col-"] {
+	float: left;
+	padding: 15px;
+}
+
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+
+@media screen and (max-width: 600px){
+    li.left_side, li.right_side {
+		float: none;
+	}
+	[class*="col-"] {
+		width: 100%;
+	}
+}
+
+

@@ -14,6 +14,8 @@
  *= require_self
  */
 
+@import "colors"
+
 * {
     box-sizing: border-box;
 }
@@ -34,7 +36,7 @@ ul.top_bar, ul.top_bar_right {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	background-color: #ff4000;
+	background-color: $color;
 }
 
 li.left_side {

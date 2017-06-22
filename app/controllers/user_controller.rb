@@ -2,6 +2,7 @@ class UserController < ApplicationController
   layout "application.html.erb"
   def show
     @hash = Hash.new("")
+    @hash[:user] = "active"
     @user = User.find(params[:id])
   end
 

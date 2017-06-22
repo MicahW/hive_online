@@ -5,6 +5,7 @@
 	<li class="left_side"><%= link_to "Contact", contact_path, id: @hash[:contact] %></li>
 	<% if logged_in? %>
 		<li class="right_side"> <%= link_to "Logout", logout_path, method: :delete, id: "" %> </li>
+		<li class="right_side"><%= link_to "User Page", current_user, id: @hash[:user]  %></li>
 	<% else %>
 		<li class="right_side"> <%= link_to "Login", login_path, id: @hash[:login] %> </li>
 	<% end %>

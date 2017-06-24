@@ -1,7 +1,6 @@
 <ul class = "<%= get_color %>" >
-	<!--<li class="left_side"><a id="active" class="top_bar" href="pipa_home.html">Home</a></li> -->
 	<li class="left_side"><%= link_to "Home", root_path, id: @hash[:home]  %></li>
-	<li class="left_side"><a class="top_bar" href="fail">Take Survey</a></li>
+	<!--<li class="left_side"><a class="top_bar" href="fail">Take Survey</a></li>-->
 	<li class="left_side"><%= link_to "Contact", contact_path, id: @hash[:contact] %></li>
 	<li class = "left_side"><%= link_to "Users", index_path, id: @hash[:index] %></li>
 	<% if logged_in? %>

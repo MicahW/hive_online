@@ -3,7 +3,7 @@
 	  <h1><%= @user.name %></h1>
         <%= gravatar_for @user %>    
   </div>
-  <% if logged_in? && curent_user = @user %>
+  <% if @show_edit %>
   <div class = "colo-4 user_info">
     <h3> Change Header Color </h3>
     <%= form_for(@user) do |f| %>

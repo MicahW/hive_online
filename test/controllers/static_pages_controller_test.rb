@@ -7,12 +7,4 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a#active[href=?]", root_path
     assert_response :success
   end
-
-  test "should get contact" do
-    get contact_path
-    assert_select "a#active", "Contact"
-    assert_select "a#active[href=?]", contact_path
-    assert_response :success
-  end
-
 end

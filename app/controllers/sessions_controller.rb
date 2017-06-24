@@ -10,11 +10,10 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       log_in user
-      redirect_to user
+      redirect_back_or user
     else
       @hash = Hash.new("")
-      @flash = Hash.new("")
-      @flash[:danger] = true
+      flash[:danger] = 
       render 'new'
     end
   end

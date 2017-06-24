@@ -25,9 +25,12 @@ class UserController < ApplicationController
   def update
     color = params[:user][:color]
     @user = user = User.find_by(id: params[:id])
-    @user.update_attribute(:color, color)
-    @hash = Hash.new("")
-    render 'show'
+    if logged_in? && current_user == @user
+      
+      @user.update_attribute(:color, color)
+      @hash = Hash.new("")
+    end
+    redirect_to @user
   end
  
   private

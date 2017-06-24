@@ -1,10 +1,11 @@
 <% provide(:title, 'Login') %>
-<h1>Sign up</h1>
+<h1>Log In</h1>
 
 <div class="row">
   <div class="col-5 signup">
-	<% if @flash[:danger] %>
-		<p class = "flash">Invalid</p>
+	<% if flash[:danger] %>
+		
+		<p class = "flash"><%= flash[:danger] %></p>
 	<% end %>
     <%= form_for(:session, url: login_path) do |f| %>
 

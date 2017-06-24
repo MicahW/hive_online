@@ -3,6 +3,7 @@
 	  <h1><%= @user.name %></h1>
         <%= gravatar_for @user %>    
   </div>
+  <% if logged_in? && curent_user = @user %>
   <div class = "colo-4 user_info">
     <h3> Change Header Color </h3>
     <%= form_for(@user) do |f| %>
@@ -14,6 +15,6 @@
     <%= f.label(:red, "Red") %>
     <%= f.submit "Save changes", class: "btn btn-primary" %>
     <% end %>
-
+  <% end %>
   </div>
 </div>

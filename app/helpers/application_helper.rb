@@ -3,6 +3,7 @@ module ApplicationHelper
     if logged_in?
       @cur = current_user
       color = @cur.read_attribute :color
+      color = "orange" if color == nil
     else
       color = "orange"
     end

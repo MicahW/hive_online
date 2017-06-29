@@ -24,6 +24,7 @@ class UserController < ApplicationController
     @hash = Hash.new("")
     @user = User.new(user_params)
     if @user.save
+      @user.color = "orange"
       log_in @user
       redirect_to @user
     else

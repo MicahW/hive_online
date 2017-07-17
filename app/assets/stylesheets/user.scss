@@ -43,3 +43,20 @@ li img.gravatar {
 	height: 75px;
 	list-style-type: none;
 }
+
+.pagination {
+    list-style-type: none;
+}
+
+ul.pagination li {
+     border-radius: 10px;
+    background-color: #6666ff;
+    float: left;
+}
+  
+.users {
+    padding-top: 20px;
+   content: "";
+    clear: both;
+    display: table;
+}

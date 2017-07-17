@@ -12,7 +12,7 @@ class UserController < ApplicationController
   def index
     @hash = Hash.new("")
     @hash[:index] = "active"
-    @users = User.all
+    @user = User.paginate(page: params[:page])
   end
   
   def new

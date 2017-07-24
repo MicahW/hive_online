@@ -1,12 +1,32 @@
-<ul class = "<%= get_color %>" >
-	<li class="left_side"><%= link_to "Home", root_path, id: @hash[:home]  %></li>
-	<!--<li class="left_side"><a class="top_bar" href="fail">Take Survey</a></li>-->
-	<li class="left_side"><%= link_to "Contact", contact_path, id: @hash[:contact] %></li>
-	<li class = "left_side"><%= link_to "Users", index_path, id: @hash[:index] %></li>
-	<% if logged_in? %>
-		<li class="right_side"> <%= link_to "Logout", logout_path, method: :delete, id: "" %> </li>
-		<li class="right_side"><%= link_to "User Page", current_user, id: @hash[:user]  %></li>
-	<% else %>
-		<li class="right_side"> <%= link_to "Login", login_path, id: @hash[:login] %> </li>
-	<% end %>
-</ul>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Hive</a>
+    </div>
+    <ul class="nav navbar-nav">
+        <li class= <%= @active[:home] %> ><%= link_to "Home", root_path %></li>
+		<li class= <%= @active[:game] %> ><%= link_to "Find Game", root_path %></li>
+		<li class= <%= @active[:players] %> ><%= link_to "Players", index_path %></li>
+		<% if logged_in? %>
+			<li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Account <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Profile", current_user %></li>
+              <li><%= link_to "Settings", '#' %></li>
+              <li class="divider"></li>
+              <li>
+                <%= link_to "Log out", logout_path, method: :delete %>
+              </li>
+            </ul>
+          </li>
+		<% else %>
+			<li class="right_side"> <%= link_to "Login", login_path %> </li>
+		<% end %>
+    </ul>
+  </div>
+</nav>
+
+
+

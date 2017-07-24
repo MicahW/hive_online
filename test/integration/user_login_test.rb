@@ -37,15 +37,14 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   end
   
   test "friednly fowarding" do
-    get contact_path
+    get index_path
     assert_redirected_to login_path
     follow_redirect!
     post login_path, params: { session: { email:    @user.email,
                                           password: 'password' }}
-    assert_redirected_to contact_path
+    assert_redirected_to index_path
     follow_redirect!
-    assert_select "a#active", "Contact"
-    assert_select "a#active[href=?]", contact_path
+    assert_select "ul.users"
     assert_response :success
   end
 

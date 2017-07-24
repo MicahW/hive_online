@@ -2,8 +2,8 @@ class SessionsController < ApplicationController
   def new
     @flash = Hash.new("")
     @flash[:danger] = false
-    @hash = Hash.new("")
-    @hash[:login] = "active"
+    @active = Hash.new("")
+    @active[:login] = "active"
   end
 
   def create
@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       log_in user
       redirect_back_or user
     else
-      @hash = Hash.new("")
+      @active = Hash.new("")
       flash[:danger] = 
       render 'new'
     end

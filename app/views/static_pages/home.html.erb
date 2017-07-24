@@ -1,40 +1,21 @@
 <% provide(:title, "home") %>
-<!DOCTYPE html>
-<html>
-<head>
-<title><%= yield(:title) %></title>
-<meta name="keywords" content="test,html,css" />
-</head>
-<body>
-<%= provide(:active, "home") %>
-
-
-<div class="row">
-
-	<%=render 'layouts/we' %>
+<%= image_tag "HiveLogo.jpg", :class => "logo" %>
 	
-	<div class="col-5">
-		<p class="header">Pipa Assosiation</p>
-		<p class="main_text">What did the American Founders actually intend for the country, and does it even matter today? If America began as an idea, then what kind of idea? In a time of increasing turmoil over American history, politics, and society, Crossroads for Liberty: Recovering the Anti-Federalist Values of America’s First Constitution takes a surprising and thought-provoking look at the American Revolution, the Articles of Confederation, and the Constitution, and asks what we can learn from them.
-			Author William Watkins casts a critical eye on conventional wisdom about the Articles of Confederation. 
-		</p>
+<div class = "row">
+	<div class="col-sm-3">
+		<p class="title-1">News</p>
+		<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mollis ipsum et erat volutpat, in pulvinar tellus semper. Quisque tincidunt risus eu sodales ultricies. Fusce nec orci at nisi tempus placerat eu et tortor. Duis nec fermentum ante, ac porttitor ligula. Cras gravida placerat massa auctor feugiat. Suspendisse potenti. In est leo, congue sed nulla eu, condimentum accumsan justo. Etiam volutpat dictum purus, sit amet rutrum justo volutpat aliquet. Nam nec rhoncus mauris.</p>
+	</div>
+	<div class="col-sm-6">
+		<p class="title-2">What is Hive</p>
+		<p>Hive is a bug-themed tabletop game, designed by John Yianni and published in 2001 by Gen42 Games. The object of Hive is to capture the opponent's queen bee by completely surrounding it, while avoiding the capture of one's own queen. Hive is an abstract strategy game.
+			Hive shares elements of both tile-based games and board games. It differs from other tile-based games in that the tiles, once placed, can then be moved to other positions according to various rules, much like chess pieces. Thus, the game has mechanics comparable to an abstract strategy board game and is marketed in that genre. It does not fit the classical definition, however, as there is no gameboard involved; the pieces are simply placed on some relatively flat surface.</p>
+		<%= link_to "Sign Up",root_path, :class => "sign-up" %>
+	</div>
+	<div class="col-sm-3">
+		<p class="title-3">How To Play</p>
+		<%= link_to (image_tag "youtube.png", :class => "how-to"), 
+			"https://www.youtube.com/watch?v=uIA8Vi7wICc" , :target  => '_blank' %>
 	</div>
 	
-	<div class="col-4">
-	
-		<%= image_tag "pipa.jpg", :class => "side" %>
-	</div>
 </div>
-
-<div class="row">
-	<a target="_blank" href="https://www.google.com/maps/place/5056+W+Running+Brook+Rd,+Columbia,+MD+21044/@39.2280678,-76.8735778,14.25z/data=!4m5!3m4!1s0x89b7df87acafbb37:0x8e77d553cec30567!8m2!3d39.2324563!4d-76.8630714">
-	<div class="col-6">
-		<%= image_tag "map.png", :class => "side" %>
-	</div>
-	</a>
-	<div class="col-6 letters">
-		
-</div>
-</body>
-</html>
-

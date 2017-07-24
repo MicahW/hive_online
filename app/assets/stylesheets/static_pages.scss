@@ -2,55 +2,64 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-img.side {
-	width: 100%;
-	border: solid;
-	border-color: #404040;
+$purple: #8600b3;
+$green: #006600;
+$yellow: #ffcc00;
+$blue: #4d94ff;
+$brown: #804000;
+$grey: #e6e6e6;
+
+.navbar {
+	margin-bottom: 0px !important; 
 }
 
-
-iframe.front_text {
-	width: 100%;
+.nav > li > a.hover{
+	background-color: #b3b3b3;
 }
 
-ul.we_are {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: #ff4000;
-	text-align: center;
-	border-radius: 20px;
+.logo {
+	display: block;
+	margin: 0 auto;
+	height: 75px;
+	width: 150px;
 }
 
-ul.we_are li {
-	border-bottom: solid;
-	border-bottom-color: #404040;
-	padding-top: 7px;
-	padding-bottom: 7px;
-}
-
-.no_lower {
-	border-bottom: none !important;
-}
-
-p.header {
-	border-radius: 20px;
-	background-color: #404040;
-	text-align: center;
+[class^="title-"] {
 	font-size: 30px;
-	padding: 14px;
-	margin: 5px;
+	text-align: center;
 }
 
-p.main_text {
-	text-indent: 30px;
+.title-1 {
+	color: $purple;
 }
 
-
-@media screen and (max-width: 600px){
-	ul.we_are {
-		display: none;
-	}
+.title-2 {
+	color: $green;
+}
+.title-3 {
+	color: $brown;
 }
 
+.how-to {
+	width: 75%;
+	height: 75%;
+}
+
+.sign-up {
+	right: 10px;
+	text-align: center;
+	display: block;
+	margin: 0 auto;
+	height: 22px;
+	width: 75px;
+	background-color: $blue;
+	border-radius: 5px;
+	color: $grey;
+}
+
+/*[class^="col-"] {
+	padding: 0px;
+	background-color: $grey;
+	border-radius: 15px;
+}*/
+		

@@ -3,25 +3,25 @@ class UserController < ApplicationController
   
   layout "application.html.erb"
   def show
-    @hash = Hash.new("")
-    @hash[:user] = "active"
+    @active = Hash.new("")
+    @active[:home] = "active"
     @user = User.find(params[:id])
     @show_edit = logged_in? && @user == current_user
   end
   
   def index
-    @hash = Hash.new("")
-    @hash[:index] = "active"
+    @active = Hash.new("")
+    @active[:index] = "active"
     @user = User.paginate(page: params[:page])
   end
   
   def new
-    @hash = Hash.new("")
+    @active = Hash.new("")
     @user = User.new
   end
   
   def create
-    @hash = Hash.new("")
+    @active = Hash.new("")
     @user = User.new(user_params)
     if @user.save
       @user.color = "orange"
@@ -40,7 +40,7 @@ class UserController < ApplicationController
     if logged_in? && current_user == @user
       puts "-------------------------updateing" 
       @user.update_attribute(:color, color)
-      @hash = Hash.new("")
+      @active = Hash.new("")
     end
     redirect_to @user
   end

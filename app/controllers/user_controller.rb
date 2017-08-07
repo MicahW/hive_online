@@ -11,8 +11,14 @@ class UserController < ApplicationController
   
   def index
     @active = Hash.new("")
-    @active[:index] = "active"
+    @active[:players] = "active"
     @user = User.paginate(page: params[:page])
+  end
+  
+  def edit
+    @user = User.find(params[:id])
+    @active = Hash.new("new")
+    @active[:settings] = "active"
   end
   
   def new
@@ -33,16 +39,14 @@ class UserController < ApplicationController
   end
   
   def update
-    color = params[:user][:color]
-    @user = user = User.find_by(id: params[:id])
-    puts @user.name
-    puts current_user.name
-    if logged_in? && current_user == @user
-      puts "-------------------------updateing" 
-      @user.update_attribute(:color, color)
-      @active = Hash.new("")
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+       redirect_to @user
+    else
+      @active = Hash.new("new")
+      @active[:settings] = "active"
+      render 'edit'
     end
-    redirect_to @user
   end
  
   private

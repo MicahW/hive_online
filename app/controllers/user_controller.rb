@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  before_action :logged_in_user, only: [:index, :show]
+  before_action :logged_in_user, only: [:index, :show, :update]
   
   layout "application.html.erb"
   def show
@@ -40,7 +40,7 @@ class UserController < ApplicationController
   
   def update
     @user = User.find(params[:id])
-    if @user.update(user_params)
+    if current_user?(@user) and @user.update(user_params)
        redirect_to @user
     else
       @active = Hash.new("new")

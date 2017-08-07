@@ -54,7 +54,7 @@ class UserControllerTest < ActionDispatch::IntegrationTest
     post login_path, params: { session: { email:    @cracker.email,
                                          password: 'password' } }
     get edit_user_path(@user)
-    assert_select "h1", "Update your profile"
+    assert_redirected_to edit_user_path(@cracker)
     patch user_path(@user), params: { user: { name:  "mike",
                                          email: "mike@example.com",
                                          password:              "foobar",

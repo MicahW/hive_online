@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  before_action :logged_in_user, only: [:index, :show, :update]
+  before_action :logged_in_user, only: [:index, :show, :update, :edit]
   
   layout "application.html.erb"
   def show
@@ -19,6 +19,9 @@ class UserController < ApplicationController
     @user = User.find(params[:id])
     @active = Hash.new("new")
     @active[:settings] = "active"
+    unless current_user?(@user)
+      redirect_to edit_user_path(current_user)
+    end   
   end
   
   def new

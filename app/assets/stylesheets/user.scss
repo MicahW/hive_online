@@ -2,6 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$purple: #8600b3;
+$green: #006600;
+$yellow: #ffcc00;
+$blue: #4d94ff;
+$brown: #804000;
+$grey: #e6e6e6;
+
 .user_info {
 
     background-color: #999999;
@@ -60,3 +67,32 @@ ul.pagination li {
     clear: both;
     display: table;
 }
+
+div.requests {
+    text-align: center;
+}
+
+
+.r_accept {
+    color: $green;
+}
+
+.r_decline {
+    color: $purple;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

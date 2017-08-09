@@ -1,11 +1,35 @@
 <div class = "row">
-  <div class= "col-2 user_info">
+  <div class= "col-sm-3 user_info">
 	  <h1><%= @user.name %></h1>
         <%= gravatar_for @user %>    
   </div>
+        
   <% if current_user?(@user) %>
-    <!-- impliment later -->
-    <div class="user-edit"></div>
+    
+    <div class= "col-sm-4 requests">
+	  <h3> Friend Requests</h3>
+      <p> Sent to You </p>
+        <ul class = "request">
+        <% @user.friend_request.each do |request|%>
+          <% sender = User.find(request.from_id) %>
+          <li class = "list-group-item" > <%= link_to sender.name, sender, :class => "r_name" %>
+                &nbsp;
+               <%= link_to "accept", root_path, :class => "r_accept" %>
+               &nbsp;
+               <%= link_to "decline", user_friend_request_path(@user), method: "delete", :class => "r_decline" %>
+        <% end %>
+        </ul>
+                 
+         <p> You Sent</p>        
+        <ul class = "request">
+        <% FriendRequest.where(from_id: @user.id).each do |sent|%>
+          <% sender = User.find(sent.user_id) %>
+          <li class = "list-group-item" > <%= link_to sender.name, sender, :class => "r_name" %>
+        <% end %>
+        </ul>       
+                 
+    </div>
+        
   <% end %>
   </div>
 </div>

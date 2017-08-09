@@ -16,7 +16,7 @@
                 &nbsp;
                <%= link_to "accept", root_path, :class => "r_accept" %>
                &nbsp;
-               <%= link_to "decline", user_friend_request_path(@user), method: "delete", :class => "r_decline" %>
+               <%= link_to "decline", user_friend_request_path(sender), method: "delete", :class => "r_decline" %>
         <% end %>
         </ul>
                  

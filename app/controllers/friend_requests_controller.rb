@@ -10,4 +10,11 @@ class FriendRequestsController < ApplicationController
     redirect_to index_path
   end
   
+  def destroy
+    @user = current_user
+    @request = @user.friend_request.find_by(from_id: params[:user_id])
+    @request.destroy
+    redirect_to @user
+  end
+  
 end

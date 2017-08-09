@@ -8,7 +8,7 @@ class SendingFriendRequestsTest < ActionDispatch::IntegrationTest
     @cracker = users(:cracker)
   end
   
- test "send friend request adds to db, but second dose not" do
+ test "friend requests" do
    post login_path, params: { session: { email:    @michael.email,
                                           password: 'password' } }
    get index_path
@@ -33,5 +33,12 @@ class SendingFriendRequestsTest < ActionDispatch::IntegrationTest
    assert_no_difference '@michael.friend_request.count' do
     post user_friend_requests_path(@michael)
    end  
+   
+   assert_difference '@bob.friend_request.count', -1 do
+    delete user_friend_request_path(id: @michael.id)
+    assert_redirected_to @bob
+   end
+   
  end
+  
 end

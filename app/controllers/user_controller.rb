@@ -5,7 +5,7 @@ class UserController < ApplicationController
   layout "application.html.erb"
   def show
     @active = Hash.new("")
-    @active[:home] = "active"
+    @active[:profile] = "active"
     @user = User.find(params[:id])
   end
   

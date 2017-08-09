@@ -1,12 +1,12 @@
 class UserController < ApplicationController
   before_action :logged_in_user, only: [:index, :show, :update, :edit]
+  before_action :correct_user, only: [:update, :edit]
   
   layout "application.html.erb"
   def show
     @active = Hash.new("")
     @active[:home] = "active"
     @user = User.find(params[:id])
-    @show_edit = logged_in? && @user == current_user
   end
   
   def index
@@ -50,6 +50,13 @@ class UserController < ApplicationController
       @active[:settings] = "active"
       render 'edit'
     end
+  end
+  
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy if admin_user?(@user)
+    redirect_to index_path 
+      
   end
  
   private

@@ -10,4 +10,9 @@ class ApplicationController < ActionController::Base
         store_location
       end
   end
+  
+  def correct_user
+    @user = User.find(params[:id])
+    current_user?(@user)
+  end
 end

@@ -3,7 +3,7 @@
 	  <h1><%= @user.name %></h1>
         <%= gravatar_for @user %>    
   </div>
-  <% if @show_edit %>
+  <% if current_user?(@user) %>
     <!-- impliment later -->
     <div class="user-edit"></div>
   <% end %>

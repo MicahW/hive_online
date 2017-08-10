@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170809164732) do
+ActiveRecord::Schema.define(version: 20170810110837) do
 
   create_table "friend_requests", force: :cascade do |t|
     t.integer "from_id"
@@ -21,6 +21,14 @@ ActiveRecord::Schema.define(version: 20170809164732) do
     t.index ["user_id"], name: "index_friend_requests_on_user_id"
   end
 
+  create_table "friends", force: :cascade do |t|
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "friend_id"
+    t.index ["user_id"], name: "index_friends_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -29,6 +37,7 @@ ActiveRecord::Schema.define(version: 20170809164732) do
     t.string "password_digest"
     t.boolean "admin", default: false
     t.integer "friend_request_id"
+    t.integer "friend_id"
     t.index ["friend_request_id"], name: "index_users_on_friend_request_id"
   end
 

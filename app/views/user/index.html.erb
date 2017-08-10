@@ -9,10 +9,10 @@
       <%= gravatar_for u, size: 50 %>
       <%= link_to u.name, u, :class => "name" %>
        &nbsp;
-       <% if !current_user?(u) && !u.friend_request.exists?(from_id: current_user.id) %>
+      <% if !current_user?(u) && !u.friend_request.exists?(from_id: current_user.id) %>
         <%= link_to "friend", user_friend_requests_path(u), method: :post %>
        &nbsp;
-      <% end %>
+     <% end %>
       <% if current_user.admin? && !current_user?(u) %>  
         <%= link_to "delete", u, method: :delete, data: {confirm: "Are You Sure?"} %>
     ` <% end %>

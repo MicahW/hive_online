@@ -12,6 +12,8 @@ class SendingFriendRequestsTest < ActionDispatch::IntegrationTest
    post login_path, params: { session: { email:    @michael.email,
                                           password: 'password' } }
    get index_path
+   
+   #send first friend request
    assert_difference '@bob.friend_request.count', 1 do
     post user_friend_requests_path(@bob)
     assert_redirected_to index_path

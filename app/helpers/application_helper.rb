@@ -9,8 +9,10 @@ module ApplicationHelper
   end
   
   def remove_friendship(user1, user2)
+   if exists_friendship?(user1, user2)
     user1.friend.find_by(friend_id: user2.id).destroy
     user2.friend.find_by(friend_id: user1.id).destroy
+   end
   end
   
   def exists_friendship?(user1, user2)

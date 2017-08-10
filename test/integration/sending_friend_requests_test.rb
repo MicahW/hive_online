@@ -74,6 +74,21 @@ class SendingFriendRequestsTest < ActionDispatch::IntegrationTest
    assert_equal @michael.friend.first.friend_id, @bob.id
  end
   
+ test "removing friends" do
+   post login_path, params: { session: { email:    @michael.email,
+                                          password: 'password' } }
+   post user_friend_requests_path(@bob)
+   delete logout_path
+   post login_path, params: { session: { email:    @bob.email,
+                                          password: 'password' } }
+   post user_friends_path(user_id: @michael.id)
+   follow_redirect!
+   
+   delete user_friend_path(user_id: @michael.id)
+   
+   assert_equal @bob.friend.count, 0
+   assert_equal @michael.friend.count, 0
+ end
 end
   
   

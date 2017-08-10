@@ -14,7 +14,7 @@
           <% sender = User.find(request.from_id) %>
           <li class = "list-group-item" > <%= link_to sender.name, sender, :class => "r_name" %>
                 &nbsp;
-               <%= link_to "accept", user_friends_path(sender), :class => "r_accept" %>
+               <%= link_to "accept", user_friends_path(sender), method: "post", :class => "r_accept" %>
                &nbsp;
                <%= link_to "decline", user_friend_request_path(sender), method: "delete", :class => "r_decline" %>
         <% end %>

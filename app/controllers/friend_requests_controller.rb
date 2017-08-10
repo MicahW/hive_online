@@ -1,4 +1,5 @@
 class FriendRequestsController < ApplicationController
+  before_action :logged_in_user, only: [:create, :edit]
   
   def create
     #only process this if the user has not already sent a request, 
@@ -23,8 +24,14 @@ class FriendRequestsController < ApplicationController
   
   def destroy
     @user = current_user
-    @request = @user.friend_request.find_by(from_id: params[:user_id])
-    @request.destroy
+    @sender = User.find(params[:user_id])
+    
+    request = @user.friend_request.find_by(from_id: @sender.id)
+    request.destroy if (request)
+      
+    request = @sender.friend_request.find_by(from_id: @user.id)
+    request.destroy if (request) 
+      
     redirect_to @user
   end
   

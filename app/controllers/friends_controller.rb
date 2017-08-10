@@ -1,5 +1,6 @@
 class FriendsController < ApplicationController
-  
+  before_action :logged_in_user, only: [:create]
+    
   def create
     @user = current_user
     @sender = User.find(params[:user_id])

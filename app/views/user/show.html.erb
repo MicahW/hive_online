@@ -1,7 +1,10 @@
 <div class = "row">
   <div class= "col-sm-3 user_info">
 	  <h1><%= @user.name %></h1>
-        <%= gravatar_for @user %>    
+        <%= gravatar_for @user %> 
+    <% if !current_user?(@user) && !@user.friend_request.exists?(from_id: current_user.id) %>
+        <%= link_to "friend", user_friend_requests_path(@user), method: :post %>
+     <% end %>
   </div>
         
   <% if current_user?(@user) %>
@@ -23,13 +26,24 @@
          <p> You Sent</p>        
         <ul class = "request">
         <% FriendRequest.where(from_id: @user.id).each do |sent|%>
-          <% sender = User.find(sent.user_id) %>
-          <li class = "list-group-item" > <%= link_to sender.name, sender, :class => "r_name" %>
+          <% user = User.find(sent.user_id) %>
+          <li class = "list-group-item" > <%= link_to user.name, user, :class => "r_name" %>
+           &nbsp;
+          <%= link_to "withdraw", user_friend_request_path(user), method: "delete", :class => "r_decline" %>
         <% end %>
-        </ul>       
-                 
+        </ul>                
     </div>
         
+    <div class= "col-sm-4 requests">
+	  <h3> Friends</h3>
+        <ul class = "request">
+        <% @user.friend.each do |request|%>
+          <% friend = User.find(request.friend_id) %>
+          <li class = "list-group-item" > <%= link_to friend.name, friend, :class => "r_name" %>
+                &nbsp;
+               <%= link_to "remove", user_friend_path(friend), method: "delete", :class => "r_decline" %>
+        <% end %>
+        </ul>    
   <% end %>
   </div>
 </div>

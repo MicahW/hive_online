@@ -3,6 +3,7 @@
   <head>
     <title>PipaAssociation</title>
     <%= csrf_meta_tags %>
+    <%= action_cable_meta_tag %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -16,6 +17,7 @@
 
   <body>
     <%= render 'layouts/header' %>
+    <div id = "friend-popup"></div>
     <%= yield %>
   </body>
 </html>

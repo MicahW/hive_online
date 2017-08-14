@@ -19,4 +19,9 @@ module ApplicationHelper
     user1.friend.exists?(friend_id: user2.id)
   end
   
+  def send_message(to, message, type)
+    channel = "request:#{to.id}"
+    data = {:message => message, :class => "bg-" + type}
+    ActionCable.server.broadcast(channel, data)
+  end 
 end

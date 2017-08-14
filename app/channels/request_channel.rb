@@ -1,6 +1,6 @@
 class RequestChannel < ApplicationCable::Channel
   def subscribed
-    stream_from 'requests'
+    stream_from "request:#{current_user.id}"
   end
 
   def unsubscribed

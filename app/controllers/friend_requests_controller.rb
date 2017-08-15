@@ -14,8 +14,11 @@ class FriendRequestsController < ApplicationController
     if !@sender.friend_request.exists?(from_id: @user.id) and
       @user.friend_request.create(from_id: @sender.id)
       send_message(@sender, "friend request sent to #{@user.name}", "success")
+      send_message(@user, "you got a friend request form #{@sender.name}", "success")
     #both users have sent friend requests to eachother, make friendship
     else
+      send_message(@sender, "#{@user.name} added as friend", "success")
+      send_message(@user, "#{@sender.name} added as friend", "success")
       add_friendship(@user, @sender)
       @sender.friend_request.find_by(from_id: @user.id).destroy
     end
@@ -32,6 +35,9 @@ class FriendRequestsController < ApplicationController
       
     request = @sender.friend_request.find_by(from_id: @user.id)
     request.destroy if (request) 
+    
+    send_message(@user, "friend request with #{@sender.name} declined", "warning")
+    send_message(@sender, "friend request with #{@user.name} declined", "warning")
       
     redirect_to @user
   end

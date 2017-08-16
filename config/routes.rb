@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   get '/settings', to: 'user#edit'
+  get '/invite/:user_id', to: 'game#new', as: "invite"
+  get '/accept/:user_id', to: 'game#create', as: "accept"
   
   resources :user do
     resources :friend_requests

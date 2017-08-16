@@ -42,6 +42,8 @@
           <li class = "list-group-item" > <%= link_to friend.name, friend, :class => "r_name" %>
                 &nbsp;
                <%= link_to "remove", user_friend_path(friend), method: "delete", :class => "r_decline" %>
+                &nbsp;
+               <%= link_to "invite to game", invite_path(friend), :class => "r_accept" %>
         <% end %>
         </ul>    
   <% end %>

@@ -15,8 +15,11 @@ App.request = App.cable.subscriptions.create "RequestChannel",
   received: (data) ->
     console.log("made is to recived data");
     $("#friend-popup").text(data["message"]);
-    $("#friend-popup").addClass(data["class"]);
+    $(".msg").addClass(data["class"]);
     $(".msg").css("position", "fixed");
     $(".msg").css("top", "0");
-   
+    $(".msg").css("right", "0");
+    if data.link_to
+        $("#game_accept").attr("href", "/accept/" + data.id);
+        $("#game_accept").text("accept invite");
                         

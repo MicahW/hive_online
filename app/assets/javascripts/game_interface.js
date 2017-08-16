@@ -293,7 +293,7 @@ c.addEventListener('mousedown', function(event) {
 yours.addEventListener('click', function(event) {
 	piece_selected = false;
 	var r = yours.getBoundingClientRect();
-	var x = event.pageX - rect.top + 1;
+	var x = event.pageX - rect.left + 1;
 	var i = (x-200.0+hexigon_size)/150.0;
 	console.log(i);
 	i = Math.round(i);
@@ -314,10 +314,10 @@ yours.addEventListener('click', function(event) {
 /* --------------DEFINE GAME OBJECTS------------------- */
 
 /* game piece */
-function Piece(code, level, q, r, color) {
+function Piece(code, q, r, color) {
 	this.color = color;
 	this.code = code;
-	this.level = level;
+	this.above = null;
 	this.q = q;
 	this.r = r;
 };
@@ -344,7 +344,7 @@ function Game(color) {
 	/* player is placing piece */
 	this.place_piece = function(q,r,code) {
 		/* ask server if valid */
-		piece = new Piece(code,0,q,r,this.color);
+		piece = new Piece(code,q,r,this.color);
 		this.your_count -= 1;
 		this.your_left[piece.code] -= 1;
 		this.board[[q,r]] = piece

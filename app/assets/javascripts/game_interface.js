@@ -345,7 +345,7 @@ function Game(color) {
 	/* gets the top piece */
 	this.get_top_piece = function(q,r) {
 		console.log("in get top piece");
-		piece = this.board[[q,r]];
+		var piece = this.board[[q,r]];
 		console.log(piece.above);
 		while(piece.above != null) {
 			console.log(piece.above);
@@ -354,33 +354,60 @@ function Game(color) {
 		return piece;
 	}
 	
-	/* player is placing piece */
-	this.place_piece = function(q,r,code) {
-		/* ask server if valid */
-		var piece = new Piece(code,q,r,this.color);
-		this.your_count -= 1;
-		this.your_left[piece.code] -= 1;
+	/* removes piece from board list */
+	this.remove_piece_from_list = function(q,r) {
+		var k;
+		for (k = 0; k < this.board_list.length; k++) {
+			if (this.board_list[k][0] == q && this.board_list[k][1] == r) {
+				this.board_list.splice(k,1);
+			}
+		}
+	}
+	
+	/* removes the top piece */
+	this.remove_top_piece = function(q,r) {
+		if (this.board[[q,r]].above == null) {
+			this.remove_piece_from_list(q,r);
+			this.board[[q,r]] = null;
+		} else {
+			var last_left = this.board[[q,r]];
+			while (last_left.above.above != null) {
+				last_left = last_left.above;
+			}
+			last_left.above = null;
+		}
+	}
+	
+	/* puts this piece on top */
+	this.place_on_top = function(q,r,piece) {
 		if (!this.piece_at([q,r])) {
 			this.board[[q,r]] = piece
 			this.board_list.push(piece);
 		} else {
 			var top_piece = this.get_top_piece(q,r);
 			top_piece.above = piece;
-			top_piece.above.above = null;
-			console.log("adding piece on top top above is " + top_piece.above);
-			console.log("adding piece on top that above is " + piece.above);
-			
+			top_piece.above.above = null;	
 		}
+	}
+			
+	
+	/* player is placing piece */
+	this.place_piece = function(q,r,code) {
+		/* ask server if valid */
+		var piece = new Piece(code,q,r,this.color);
+		this.your_count -= 1;
+		this.your_left[piece.code] -= 1;
+		this.place_on_top(q,r,piece);
 	};
 	
 	/* player is moving piece */
 	this.move_piece = function(q,r,to_q,to_r) {
 		/*ask server if valid */
-		var piece = this.board[[q,r]];
+		var piece = this.get_top_piece(q,r);
 		piece.q = to_q;
 		piece.r = to_r;
-		this.board[[q,r]] = null;
-	    this.board[[to_q,to_r]] = piece;
+		this.remove_top_piece(q,r);
+	    this.place_on_top(to_q,to_r,piece);
 	};
 	
 	/* is there a pice at these cords */

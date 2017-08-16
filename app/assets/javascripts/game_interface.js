@@ -298,9 +298,7 @@ yours.addEventListener('click', function(event) {
 	var r = yours.getBoundingClientRect();
 	var x = event.pageX - rect.left + 1;
 	var i = (x-200.0+hexigon_size)/150.0;
-	console.log(i);
 	i = Math.round(i);
-	console.log(i);
 	if (i > -1 && i < 5) {
 		if (held_selected && held_number == i) {
 			held_selected = false;
@@ -344,21 +342,41 @@ function Game(color) {
 	this.color = color;
 	this.other_color = color == "black" ? "white" : "black";
 	
+	/* gets the top piece */
+	this.get_top_piece = function(q,r) {
+		console.log("in get top piece");
+		piece = this.board[[q,r]];
+		console.log(piece.above);
+		while(piece.above != null) {
+			console.log(piece.above);
+			piece = piece.above;
+		}
+		return piece;
+	}
+	
 	/* player is placing piece */
 	this.place_piece = function(q,r,code) {
 		/* ask server if valid */
-		piece = new Piece(code,q,r,this.color);
+		var piece = new Piece(code,q,r,this.color);
 		this.your_count -= 1;
 		this.your_left[piece.code] -= 1;
-		this.board[[q,r]] = piece
-		this.board_list.push(piece);
+		if (!this.piece_at([q,r])) {
+			this.board[[q,r]] = piece
+			this.board_list.push(piece);
+		} else {
+			var top_piece = this.get_top_piece(q,r);
+			top_piece.above = piece;
+			top_piece.above.above = null;
+			console.log("adding piece on top top above is " + top_piece.above);
+			console.log("adding piece on top that above is " + piece.above);
+			
+		}
 	};
 	
 	/* player is moving piece */
 	this.move_piece = function(q,r,to_q,to_r) {
 		/*ask server if valid */
-		console.log(q, r, to_q, to_r);
-		piece = this.board[[q,r]];
+		var piece = this.board[[q,r]];
 		piece.q = to_q;
 		piece.r = to_r;
 		this.board[[q,r]] = null;

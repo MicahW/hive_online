@@ -244,8 +244,9 @@ c.addEventListener('mouseup', function(event) {
 	
 	var move_list = [];
 	
-	if (game.piece_at([q,r])) {
-		/*clicked, on a hex, display niegbors*/
+	if (!held_selected && !piece_selected && game.piece_at([q,r])) {
+		/*a piece is not selected to place, and there is a hex here, 
+		must be asking for movees list */
 		piece_selected = true;
 		q_selected = q;
 		r_selected = r;
@@ -260,13 +261,15 @@ c.addEventListener('mouseup', function(event) {
 			Rselect = r;
 		}
 	} else {
-		/*cliked, on a empty space, add a hex there*/
+		/* a piece is primed for placing or clicked on a 
+		empty space with nothing selected */
 		if (held_selected) {
 			game.place_piece(q,r,held_number);
 		} else if (piece_selected) {
 			game.move_piece(q_selected, r_selected, q, r);
 			piece_selected = false;
 		}
+		/* if clicked on empty space nothing will happen */
 		
 	}
 	held_selected = false;

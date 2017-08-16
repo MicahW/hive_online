@@ -17,4 +17,4 @@
 //= require bootstrap
 //= bootstrap.min
 //= require turbolinks
-//= require_tree ./channels
+//= require_tree .

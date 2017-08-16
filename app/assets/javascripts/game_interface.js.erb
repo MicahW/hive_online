@@ -1,0 +1,417 @@
+
+/* ------------------GLOBAL VARIABLES----------------------- */
+
+var c = document.getElementById("myCanvas");
+var yours = document.getElementById("yours");
+var others = document.getElementById("others");
+/* graphics set up */
+var hexigon_size = 35;
+var rect = c.getBoundingClientRect();
+var y_canvas = rect.top + 1;
+var x_canvas = rect.left + 1;
+var x_offset = 100;
+var y_offset = 100;
+
+/* game setup */
+game = new Game("white");
+
+
+/* mouse globals */
+var Xclicked;
+var Yclicked;
+var Qselect = null;
+var Rselect = null;
+var dragging = false;
+
+var held_selected = false;
+var held_number = 0;
+
+var piece_selected = false;
+var q_selected;
+var r_selected;
+
+/* images */
+var img_arr = get_img_arr();
+
+
+
+/* setup  */
+var height = c.height;
+var width = c.width;
+var ctx = c.getContext("2d");
+var your_ctx = yours.getContext("2d");
+var other_ctx = others.getContext("2d");
+
+setTimeout(function() {
+	draw_all(ctx, []);
+}, 100);
+
+
+
+/* get array of all piece images */
+function get_img_arr() {
+
+	var w_bee = new Image();
+	w_bee.src = "imgs/bee.png";
+	
+	var w_ant = new Image();
+	w_ant.src = "imgs/ant.png";
+
+	var w_grasshopper = new Image();
+	w_grasshopper.src = "imgs/grasshopper.png";
+
+	var w_spider = new Image();
+	w_spider.src = "imgs/spider.png";
+
+	var w_beatle = new Image();
+	w_beatle.src = "imgs/beatle.png";
+	
+	var img_arr = [w_bee, w_ant, w_grasshopper, w_spider, w_beatle];
+	return img_arr;
+}
+
+
+/* ----------------INTERFACE AND GRAPHICS FUNCTIONS ---------------------*/
+
+
+/* draw all pies to screen */
+function draw_all(ctx, move_list) {
+	
+	ctx.clearRect(0, 0, width, height);
+	other_ctx.clearRect(0, 0, width, height);
+	your_ctx.clearRect(0, 0, width, height);
+
+	ctx.beginPath();
+	for (i = 0; i < game.board_list.length; i++) {
+		piece = game.board_list[i];
+		hexigon(ctx, piece.q, piece.r, hexigon_size, true, piece.code, piece.color);
+	}
+	
+	ctx.strokeStyle = "black";
+	ctx.stroke();
+	
+	ctx.beginPath();
+	for (i = 0; i < move_list.length; i++) {
+		hexigon(ctx, move_list[i][0], move_list[i][1], hexigon_size, false)
+	}
+	
+	
+	
+	ctx.strokeStyle = "blue";
+	ctx.stroke();
+	ctx.beginPath();
+	
+	your_ctx.beginPath();
+	other_ctx.beginPath();
+	/*now draw the hexigons from placment pool */
+	for (i = 0; i< 5; i++) {
+		xpos = i*150 +  200;
+		draw_hexigon(other_ctx, xpos, 40, hexigon_size, true,  i, game.other_color);
+		other_ctx.font = "30px Arial";
+		other_ctx.fillText("X " + game.other_left[i], xpos+50, 50);
+	}
+		
+	for (i = 0; i< 5; i++) {
+		xpos = i*150 +  200;
+		draw_hexigon(your_ctx, xpos, 40, hexigon_size, true,  i, game.color);
+		your_ctx.font = "30px Arial";
+		your_ctx.fillText("X " + game.your_left[i], xpos+50, 50);
+	}
+	
+	your_ctx.strokeStyle = "black";
+	your_ctx.stroke();
+	other_ctx.strokeStyle = "black";
+	other_ctx.stroke();
+	
+	your_ctx.beginPath();
+	if (held_selected) {
+		xpos = held_number*150 +  200;
+		draw_hexigon(your_ctx, xpos, 40, hexigon_size, true,  held_number, game.color);
+	}
+	your_ctx.strokeStyle = "blue";
+	your_ctx.stroke();
+	
+	
+	
+}	
+
+/* draw a hexigon */
+function draw_hexigon(ctx, x, y, size, img, code, color) {
+	var whole = size * (2.0/Math.sqrt(3))
+	var half = whole / 2.0
+	
+	ctx.moveTo(x-whole, y)
+	ctx.lineTo(x-half,y-size)
+	ctx.lineTo(x+half, y-size)
+	ctx.lineTo(x+whole, y)
+	ctx.lineTo(x+half, y+size)
+	ctx.lineTo(x-half, y+size)
+	ctx.lineTo(x-whole, y)	
+	if (img) {
+		if (color === "black") {
+			ctx.fill();
+			ctx.beginPath();
+		}
+		ctx.drawImage(img_arr[code], x-(size) , y-(size), size*2, size*2 );
+	}
+}
+
+/* draw hex with cord system */
+function hexigon(ctx, x, y, h, img, code, color) {
+	var w = h * (1.0/Math.sqrt(3))
+	
+	xpos = 3*w*x + x_offset;
+	ypos = (2*h*y) + (h*x) + y_offset;
+	draw_hexigon(ctx, xpos, ypos, h, img, code, color)
+	
+	
+	/*
+	ctx.font = "10px Arial";
+	ctx.fillText(x + "," + y,xpos,ypos); */
+}
+
+/* take mouse inputs and convert to a hex in axial */
+function getcords(x,y) {
+	size = hexigon_size * (2.0/Math.sqrt(3))
+	
+	var q =  x * 2/3 / size
+    var r = (-x / 3 + Math.sqrt(3)/3 * y) / size
+	
+	/* converty to cube */
+	var cx = q
+    var cz = r
+    var cy = -cx-cz
+	
+	/* use hex round */
+	var rx = Math.round(cx)
+    var ry = Math.round(cy)
+    var rz = Math.round(cz)
+
+    var x_diff = Math.abs(rx - cx)
+    var y_diff = Math.abs(ry - cy)
+    var z_diff = Math.abs(rz - cz)
+
+    if (x_diff > y_diff && x_diff > z_diff) {
+        rx = -ry-rz
+    } else if (y_diff > z_diff) {
+        ry = -rx-rz
+    } else {
+        rz = -rx-ry
+	}
+	/* convert back to axial */
+	
+	q = rx
+	r = rz
+	
+	return [q,r]
+}
+
+
+
+/* -------------------------EVNENT FUNCTIONS ------------------------------*/
+
+/*funtion called on mouse move*/	
+function drag(event) {
+	/* mouse moved so draging, dont click */
+		/* get position now */
+	     
+		var x = event.pageX - x_canvas - x_offset;
+		var y = event.pageY - y_canvas - y_offset;
+	
+	    if (x != Xclicked || y != Yclicked) {
+		  dragging = true;
+		 	
+		  x_offset -= (Xclicked - x);
+		  y_offset -= (Yclicked - y);
+		
+	
+		  Xclicked = x;
+		  Yclicked = y;
+		  draw_all(c.getContext("2d"), []);
+		}
+}
+	
+	
+c.addEventListener('mouseup', function(event) {
+	c.removeEventListener("mousemove", drag);
+	if (!dragging) {
+	var x = event.pageX - x_canvas - x_offset;
+    var y = event.pageY - y_canvas - y_offset;
+	
+	cords = getcords(x,y)
+	q = cords[0];
+	r = cords[1];
+	
+	var move_list = [];
+	
+	if (game.piece_at([q,r])) {
+		/*clicked, on a hex, display niegbors*/
+		piece_selected = true;
+		q_selected = q;
+		r_selected = r;
+		
+		
+		if (q == Qselect && r == Rselect) {
+			Qselect = null;
+			Rselect = null;
+		} else {	
+			move_list = game.get_moves(q,r);
+			Qselect = q;
+			Rselect = r;
+		}
+	} else {
+		/*cliked, on a empty space, add a hex there*/
+		if (held_selected) {
+			game.place_piece(q,r,held_number);
+		} else if (piece_selected) {
+			game.move_piece(q_selected, r_selected, q, r);
+			piece_selected = false;
+		}
+		
+	}
+	held_selected = false;
+	draw_all(ctx, move_list);
+	
+	
+	
+    var coords = "X coords: " + q + ", Y coords: " + r;
+	document.getElementById("display").innerHTML = coords;
+	}
+	dragging = false;
+}, false);
+
+c.addEventListener('mousedown', function(event) {
+	dragging = false;
+	Xclicked = event.pageX - x_canvas - x_offset;
+    Yclicked = event.pageY - y_canvas - y_offset;
+	
+	/* add a event lisener for dragging */
+	c.addEventListener('mousemove', drag, false);	
+}, false);	
+
+/* mouse clicks for held pieces */
+yours.addEventListener('click', function(event) {
+	piece_selected = false;
+	var r = yours.getBoundingClientRect();
+	var x = event.pageX - rect.top + 1;
+	var i = (x-200.0+hexigon_size)/150.0;
+	console.log(i);
+	i = Math.round(i);
+	console.log(i);
+	if (i > -1 && i < 5) {
+		if (held_selected && held_number == i) {
+			held_selected = false;
+		} else {
+			held_selected = true
+			held_number = i;
+		}
+	}
+	draw_all(ctx, []);
+},false);
+	
+
+
+/* --------------DEFINE GAME OBJECTS------------------- */
+
+/* game piece */
+function Piece(code, level, q, r, color) {
+	this.color = color;
+	this.code = code;
+	this.level = level;
+	this.q = q;
+	this.r = r;
+};
+
+	
+
+function Game(color) {
+	/* int code 0-4 for each peice */
+	this.codes = ["bee", "ant", "grasshopper", "spider", "beatle"];
+	/* hash of each board peice */
+	this.board = {};
+	/* list for board */
+	this.board_list = [];
+
+	/* how many of each are left in hand */
+	this.your_count = 11;
+	this.other_count = 11;
+	this.your_left = [1,3,3,2,2];
+	this.other_left = [1,3,3,2,2];
+	
+	this.color = color;
+	this.other_color = color == "black" ? "white" : "black";
+	
+	/* player is placing piece */
+	this.place_piece = function(q,r,code) {
+		/* ask server if valid */
+		piece = new Piece(code,0,q,r,this.color);
+		this.your_count -= 1;
+		this.your_left[piece.code] -= 1;
+		this.board[[q,r]] = piece
+		this.board_list.push(piece);
+	};
+	
+	/* player is moving piece */
+	this.move_piece = function(q,r,to_q,to_r) {
+		/*ask server if valid */
+		console.log(q, r, to_q, to_r);
+		piece = this.board[[q,r]];
+		piece.q = to_q;
+		piece.r = to_r;
+		this.board[[q,r]] = null;
+	    this.board[[to_q,to_r]] = piece;
+	};
+	
+	/* is there a pice at these cords */
+	this.piece_at = function(cords) {
+		return this.board[cords] != null;
+	};
+	
+	/* get a list of all moves this piece can make */
+	/* right now just a list of niegbors */
+	this.get_moves = function(q,r) {
+		move_list = [];
+		/* if the mouse if hovering over a selected hex */
+		directions = [[q,r-1],[q+1,r-1],[q+1,r],[q,r+1],[q-1,r+1],[q-1,r]]
+		for(i = 0; i < 6; i++) {
+			if (!this.piece_at(directions[i])) {
+				move_list.push(directions[i]);
+			}
+		}
+		return move_list;
+	};
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

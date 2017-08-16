@@ -20,6 +20,6 @@ App.request = App.cable.subscriptions.create "RequestChannel",
     $(".msg").css("top", "0");
     $(".msg").css("right", "0");
     if data.link_to
-        $("#game_accept").attr("href", "/accept/" + data.id);
+        $("#game_accept").attr("href", "/accept/" + parseInt(data.link_from));
         $("#game_accept").text("accept invite");
                         

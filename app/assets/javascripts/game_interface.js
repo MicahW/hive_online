@@ -140,7 +140,7 @@ function draw_all(ctx, move_list) {
 	your_ctx.beginPath();
 	if (held_selected) {
 		xpos = held_number*150 +  200;
-		draw_hexigon(your_ctx, xpos, 40, hexigon_size, true,  held_number, game.color, 0);
+		draw_hexigon(your_ctx, xpos, 40, hexigon_size, true,  held_number, "white", 0);
 	}
 	your_ctx.strokeStyle = "blue";
 	your_ctx.stroke();
@@ -151,8 +151,8 @@ function draw_all(ctx, move_list) {
 
 /* draw a hexigon */
 function draw_hexigon(ctx, x, y, size, img, code, color, level) {
-	x += 3 * level;
-	y -= 3 * level;
+	x += 6 * level;
+	y -= 6 * level;
 	var whole = size * (2.0/Math.sqrt(3))
 	var half = whole / 2.0
 	
@@ -249,12 +249,8 @@ function drag(event) {
 	
 	
 c.addEventListener('mouseup', function(event) {
-	console.log("-------------in mouse up---------------");
-	console.log("piece_selected " + piece_selected);
-	console.log("held_selected " + held_selected);
 	c.removeEventListener("mousemove", drag);
 	if (!dragging) {
-	console.log("not dragging");
 	var x = event.pageX - x_canvas - x_offset;
     var y = event.pageY - y_canvas - y_offset;
 	
@@ -265,7 +261,6 @@ c.addEventListener('mouseup', function(event) {
 	var move_list = [];
 	
 	if (!held_selected && !piece_selected && game.piece_at([q,r])) {
-		console.log(" not selected,and piece at");
 		/*a piece is not selected to place, and there is a hex here, 
 		must be asking for movees list */
 		piece_selected = true;
@@ -274,17 +269,14 @@ c.addEventListener('mouseup', function(event) {
 		
 		
 		if (q == Qselect && r == Rselect) {
-			console.log("determedn that clicking on already clicked piece");
 			Qselect = null;
 			Rselect = null;
 		} else {	
-			console.log("now getting moves list");
 			move_list = game.get_moves(q,r);
 			Qselect = q;
 			Rselect = r;
 		}
 	} else {
-		console.log("in else");
 		/* a piece is primed for placing or clicked on a 
 		empty space with nothing selected */
 		if (held_selected) {
@@ -444,7 +436,6 @@ function Game(color) {
 	/* get a list of all moves this piece can make */
 	/* right now just a list of niegbors */
 	this.get_moves = function(q,r) {
-		console.log("in get_moves");
 		move_list = [];
 		/* if the mouse if hovering over a selected hex */
 		directions = [[q,r-1],[q+1,r-1],[q+1,r],[q,r+1],[q-1,r+1],[q-1,r]]

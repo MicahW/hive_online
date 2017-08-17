@@ -82,9 +82,24 @@ function draw_all(ctx, move_list) {
 	your_ctx.clearRect(0, 0, width, height);
 
 	ctx.beginPath();
-	for (i = 0; i < game.board_list.length; i++) {
-		piece = game.board_list[i];
-		hexigon(ctx, piece.q, piece.r, hexigon_size, true, piece.code, piece.color);
+	
+	/* draw each level at a time, keep a list of aboves */
+	var level_list = game.board_list;
+	var level = 0;
+	while (level_list.length > 0) {
+		console.log(level);
+		var next_level = [];
+		for (i = 0; i < level_list.length; i++) {
+			piece = level_list[i];
+			var draw_img = true;
+			if (piece.above != null) {
+				next_level.push(piece.above);
+				draw_img = false;
+			}
+			hexigon(ctx, piece.q, piece.r, hexigon_size, draw_img, piece.code, piece.color, level);
+		}
+		level_list = next_level;
+		level += 1;
 	}
 	
 	ctx.strokeStyle = "black";
@@ -92,7 +107,7 @@ function draw_all(ctx, move_list) {
 	
 	ctx.beginPath();
 	for (i = 0; i < move_list.length; i++) {
-		hexigon(ctx, move_list[i][0], move_list[i][1], hexigon_size, false)
+		hexigon(ctx, move_list[i][0], move_list[i][1], hexigon_size, false, 0, 0, 0)
 	}
 	
 	
@@ -106,14 +121,14 @@ function draw_all(ctx, move_list) {
 	/*now draw the hexigons from placment pool */
 	for (i = 0; i< 5; i++) {
 		xpos = i*150 +  200;
-		draw_hexigon(other_ctx, xpos, 40, hexigon_size, true,  i, game.other_color);
+		draw_hexigon(other_ctx, xpos, 40, hexigon_size, true,  i, game.other_color, 0);
 		other_ctx.font = "30px Arial";
 		other_ctx.fillText("X " + game.other_left[i], xpos+50, 50);
 	}
 		
 	for (i = 0; i< 5; i++) {
 		xpos = i*150 +  200;
-		draw_hexigon(your_ctx, xpos, 40, hexigon_size, true,  i, game.color);
+		draw_hexigon(your_ctx, xpos, 40, hexigon_size, true,  i, game.color, 0);
 		your_ctx.font = "30px Arial";
 		your_ctx.fillText("X " + game.your_left[i], xpos+50, 50);
 	}
@@ -126,7 +141,7 @@ function draw_all(ctx, move_list) {
 	your_ctx.beginPath();
 	if (held_selected) {
 		xpos = held_number*150 +  200;
-		draw_hexigon(your_ctx, xpos, 40, hexigon_size, true,  held_number, game.color);
+		draw_hexigon(your_ctx, xpos, 40, hexigon_size, true,  held_number, game.color, 0);
 	}
 	your_ctx.strokeStyle = "blue";
 	your_ctx.stroke();
@@ -136,7 +151,9 @@ function draw_all(ctx, move_list) {
 }	
 
 /* draw a hexigon */
-function draw_hexigon(ctx, x, y, size, img, code, color) {
+function draw_hexigon(ctx, x, y, size, img, code, color, level) {
+	x += 3 * level;
+	y -= 3 * level;
 	var whole = size * (2.0/Math.sqrt(3))
 	var half = whole / 2.0
 	
@@ -157,12 +174,12 @@ function draw_hexigon(ctx, x, y, size, img, code, color) {
 }
 
 /* draw hex with cord system */
-function hexigon(ctx, x, y, h, img, code, color) {
+function hexigon(ctx, x, y, h, img, code, color, level) {
 	var w = h * (1.0/Math.sqrt(3))
 	
 	xpos = 3*w*x + x_offset;
 	ypos = (2*h*y) + (h*x) + y_offset;
-	draw_hexigon(ctx, xpos, ypos, h, img, code, color)
+	draw_hexigon(ctx, xpos, ypos, h, img, code, color, level)
 	
 	
 	/*

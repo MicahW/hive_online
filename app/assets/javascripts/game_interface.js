@@ -87,7 +87,6 @@ function draw_all(ctx, move_list) {
 	var level_list = game.board_list;
 	var level = 0;
 	while (level_list.length > 0) {
-		console.log(level);
 		var next_level = [];
 		for (i = 0; i < level_list.length; i++) {
 			piece = level_list[i];
@@ -250,8 +249,12 @@ function drag(event) {
 	
 	
 c.addEventListener('mouseup', function(event) {
+	console.log("-------------in mouse up---------------");
+	console.log("piece_selected " + piece_selected);
+	console.log("held_selected " + held_selected);
 	c.removeEventListener("mousemove", drag);
 	if (!dragging) {
+	console.log("not dragging");
 	var x = event.pageX - x_canvas - x_offset;
     var y = event.pageY - y_canvas - y_offset;
 	
@@ -262,6 +265,7 @@ c.addEventListener('mouseup', function(event) {
 	var move_list = [];
 	
 	if (!held_selected && !piece_selected && game.piece_at([q,r])) {
+		console.log(" not selected,and piece at");
 		/*a piece is not selected to place, and there is a hex here, 
 		must be asking for movees list */
 		piece_selected = true;
@@ -270,26 +274,34 @@ c.addEventListener('mouseup', function(event) {
 		
 		
 		if (q == Qselect && r == Rselect) {
+			console.log("determedn that clicking on already clicked piece");
 			Qselect = null;
 			Rselect = null;
 		} else {	
+			console.log("now getting moves list");
 			move_list = game.get_moves(q,r);
 			Qselect = q;
 			Rselect = r;
 		}
 	} else {
+		console.log("in else");
 		/* a piece is primed for placing or clicked on a 
 		empty space with nothing selected */
 		if (held_selected) {
 			game.place_piece(q,r,held_number);
+			held_selected = false;
 		} else if (piece_selected) {
 			game.move_piece(q_selected, r_selected, q, r);
 			piece_selected = false;
+			
 		}
+		Qselect = null;
+		Rselect = null;
 		/* if clicked on empty space nothing will happen */
 		
 	}
-	held_selected = false;
+	
+	
 	draw_all(ctx, move_list);
 	
 	
@@ -361,11 +373,8 @@ function Game(color) {
 	
 	/* gets the top piece */
 	this.get_top_piece = function(q,r) {
-		console.log("in get top piece");
 		var piece = this.board[[q,r]];
-		console.log(piece.above);
 		while(piece.above != null) {
-			console.log(piece.above);
 			piece = piece.above;
 		}
 		return piece;
@@ -435,6 +444,7 @@ function Game(color) {
 	/* get a list of all moves this piece can make */
 	/* right now just a list of niegbors */
 	this.get_moves = function(q,r) {
+		console.log("in get_moves");
 		move_list = [];
 		/* if the mouse if hovering over a selected hex */
 		directions = [[q,r-1],[q+1,r-1],[q+1,r],[q,r+1],[q-1,r+1],[q-1,r]]

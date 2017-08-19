@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170815141826) do
+ActiveRecord::Schema.define(version: 20170819204429) do
 
   create_table "friend_requests", force: :cascade do |t|
     t.integer "from_id"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20170815141826) do
     t.boolean "admin", default: false
     t.integer "friend_request_id"
     t.integer "friend_id"
+    t.integer "opponent_id"
     t.index ["friend_request_id"], name: "index_users_on_friend_request_id"
   end
 

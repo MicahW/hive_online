@@ -4,6 +4,10 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    # Any cleanup needed when channel is unsubscribed
+    Game.forfeit(current_user.id)
+  end
+  
+  def make_move(data)
+    Game.make_move(current_user.id, data)
   end
 end

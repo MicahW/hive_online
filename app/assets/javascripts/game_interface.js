@@ -13,7 +13,7 @@ var x_offset = 100;
 var y_offset = 100;
 
 /* game setup */
-game = new Game("white");
+var game;
 
 
 /* mouse globals */
@@ -42,9 +42,14 @@ var ctx = c.getContext("2d");
 var your_ctx = yours.getContext("2d");
 var other_ctx = others.getContext("2d");
 
-setTimeout(function() {
-	draw_all(ctx, []);
-}, 100);
+
+function start_game(color) {
+	console.log(color);
+	game = new Game(color);
+	setTimeout(function() {
+		draw_all(ctx, []);
+	}, 100);
+}
 
 
 

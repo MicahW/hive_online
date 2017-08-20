@@ -1,3 +1,9 @@
+//= require cable
+//= require_self
+//= require_tree .
+
+this.App = {}
+App.cable = ActionCable.createConsumer();
 App.game = App.cable.subscriptions.create "GameChannel",
   connected: ->
     # Called when the subscription is ready for use on the server

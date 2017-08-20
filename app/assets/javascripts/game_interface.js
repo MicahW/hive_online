@@ -414,6 +414,14 @@ function Game(color) {
 	}
 			
 	
+	this.opponent_place(q,r,code) {
+		color_for = this.color === "white" ? "black" : "white";
+		var piece = new Piece(code,q,color_for);
+		this.other_count -= 1;
+		this.other_left[piece.code] -= 1;
+		this.place_on_top(q,r,piece);
+	};
+	
 	/* player is placing piece */
 	this.place_piece = function(q,r,code) {
 		/* ask server if valid */

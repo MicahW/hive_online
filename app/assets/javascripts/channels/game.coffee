@@ -13,6 +13,11 @@ App.game = App.cable.subscriptions.create "GameChannel",
 
   received: (data) ->
     switch data.action
-      when "game_start" then start_game(data.msg)
-      else null
+      when "game_start"
+        start_game(data.msg)
+      when "move_turn"
+        game.move_piece(data.q, data.r, data.to_q, data.to_r)
+      when "place_turn"
+        game.opponent_place(data.q, data.r, code)
+
       

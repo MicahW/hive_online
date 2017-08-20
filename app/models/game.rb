@@ -30,9 +30,7 @@ class Game
 
   def self.make_move(uuid, data)
     opponent = get_opponent(uuid)
-    move_string = "#{data["from"]}-#{data["to"]}"
-
-    ActionCable.server.broadcast "player_#{opponent}", {action: "make_move", msg: move_string}
+    ActionCable.server.broadcast "player_#{opponent}", data
   end
   
   

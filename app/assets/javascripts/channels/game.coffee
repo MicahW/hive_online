@@ -16,19 +16,14 @@ App.game = App.cable.subscriptions.create "GameChannel",
       when "game_start"
         start_game(data.msg)
       when "take_turn"
-        if data.move_type == "move"
-          game.move_piece(data.q, data.r, data.to_q, data.to_r)
-        else
-          console.log("in reviced 1 data place");
-          console.log(data);
-          game.opponent_place(data.q, data.r, data.code);
-          console.log("in reviced data place");
-          console.log(data.code);
-        draw_all_ctx();
+        if !game.turn
+          if data.move_type == "move"
+            game.move_piece(data.q, data.r, data.to_q, data.to_r)
+          else
+            game.opponent_place(data.q, data.r, data.code);
+          draw_all_ctx();
       
   send_turn: (move_type, code, q, r, to_q, to_r) ->
-    console.log("in send turn");
-    console.log(code);
     data = {};
     data.move_type = move_type;
     data.code = code;

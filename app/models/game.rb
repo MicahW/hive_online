@@ -1,4 +1,4 @@
-class Game
+class Game < ApplicationRecord
   
   def self.set_opponents(uid1, uid2)
     user1 = User.find(uid1)

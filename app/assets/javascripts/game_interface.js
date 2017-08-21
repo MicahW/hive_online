@@ -44,7 +44,6 @@ var other_ctx = others.getContext("2d");
 
 
 function start_game(color) {
-	console.log(color);
 	game = new Game(color);
 	setTimeout(function() {
 		draw_all(ctx, []);
@@ -163,8 +162,9 @@ function draw_all(ctx, move_list) {
 
 /* draw a hexigon */
 function draw_hexigon(ctx, x, y, size, img, code, color, level) {
-	console.log(code);
-	console.log(img_arr[code]);
+	if (img) {
+		ctx.beginPath();
+	}
 	x += 6 * level;
 	y -= 6 * level;
 	var whole = size * (2.0/Math.sqrt(3))
@@ -180,10 +180,12 @@ function draw_hexigon(ctx, x, y, size, img, code, color, level) {
 	if (img) {
 		if (color === "black") {
 			ctx.fill();
-			ctx.beginPath();
 		}
 		ctx.drawImage(img_arr[code], x-(size) , y-(size), size*2, size*2 );
+		ctx.strokeStyle = "black";
+		ctx.stroke();
 	}
+	
 }
 
 /* draw hex with cord system */
@@ -374,6 +376,7 @@ function Game(color) {
 	this.your_left = [1,3,3,2,2];
 	this.other_left = [1,3,3,2,2];
 	
+	this.turn = (color == "white") ? true : false
 	this.color = color;
 	this.other_color = color == "black" ? "white" : "black";
 	
@@ -424,18 +427,19 @@ function Game(color) {
 			
 	
 	this.opponent_place = function(q,r,p_code) {
-		console.log("opponent_place");
-		console.log(p_code);
+		console.log(this.board);
+		this.turn = true
 		var color_for = this.color === "white" ? "black" : "white";
-		var piece = new Piece(p_code,q,color_for);
+		var piece = new Piece(p_code,q,r,color_for);
 		this.other_count -= 1;
 		this.other_left[piece.code] -= 1;
 		this.place_on_top(q,r,piece);
-		console.log(piece.code);
+		console.log(this.board);
 	};
 	
 	/* player is placing piece */
 	this.place_piece = function(q,r,code) {
+		this.turn = false
 		/* ask server if valid */
 		var piece = new Piece(code,q,r,this.color);
 		this.your_count -= 1;
@@ -446,6 +450,7 @@ function Game(color) {
 	
 	/* player is moving piece */
 	this.move_piece = function(q,r,to_q,to_r) {
+		this.turn = false
 		/*ask server if valid */
 		var piece = this.get_top_piece(q,r);
 		piece.q = to_q;

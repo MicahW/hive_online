@@ -7,7 +7,8 @@ class GameChannel < ApplicationCable::Channel
     Game.forfeit(current_user.id)
   end
   
-  def make_move(data)
+  def take_turn(data)
+    data["action"] = "take_turn"
     Game.make_move(current_user.id, data)
   end
 end

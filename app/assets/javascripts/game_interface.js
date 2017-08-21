@@ -78,6 +78,13 @@ function get_img_arr() {
 
 /* ----------------INTERFACE AND GRAPHICS FUNCTIONS ---------------------*/
 
+function draw_all_ctx() {
+	can = document.getElementById("myCanvas");
+	ctx_copy = can.getContext("2d");
+	draw_all(ctx_copy, []);
+}
+	
+	
 
 /* draw all pies to screen */
 function draw_all(ctx, move_list) {
@@ -156,6 +163,8 @@ function draw_all(ctx, move_list) {
 
 /* draw a hexigon */
 function draw_hexigon(ctx, x, y, size, img, code, color, level) {
+	console.log(code);
+	console.log(img_arr[code]);
 	x += 6 * level;
 	y -= 6 * level;
 	var whole = size * (2.0/Math.sqrt(3))
@@ -414,12 +423,15 @@ function Game(color) {
 	}
 			
 	
-	this.opponent_place(q,r,code) {
-		color_for = this.color === "white" ? "black" : "white";
-		var piece = new Piece(code,q,color_for);
+	this.opponent_place = function(q,r,p_code) {
+		console.log("opponent_place");
+		console.log(p_code);
+		var color_for = this.color === "white" ? "black" : "white";
+		var piece = new Piece(p_code,q,color_for);
 		this.other_count -= 1;
 		this.other_left[piece.code] -= 1;
 		this.place_on_top(q,r,piece);
+		console.log(piece.code);
 	};
 	
 	/* player is placing piece */
@@ -429,6 +441,7 @@ function Game(color) {
 		this.your_count -= 1;
 		this.your_left[piece.code] -= 1;
 		this.place_on_top(q,r,piece);
+		App.game.send_turn("place", code, q, r, -1,-1);
 	};
 	
 	/* player is moving piece */
@@ -439,6 +452,7 @@ function Game(color) {
 		piece.r = to_r;
 		this.remove_top_piece(q,r);
 	    this.place_on_top(to_q,to_r,piece);
+		App.game.send_turn("move", -1, q, r, to_q, to_r); 
 	};
 	
 	/* is there a pice at these cords */

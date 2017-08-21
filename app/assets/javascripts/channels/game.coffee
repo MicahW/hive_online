@@ -15,9 +15,27 @@ App.game = App.cable.subscriptions.create "GameChannel",
     switch data.action
       when "game_start"
         start_game(data.msg)
-      when "move_turn"
-        game.move_piece(data.q, data.r, data.to_q, data.to_r)
-      when "place_turn"
-        game.opponent_place(data.q, data.r, code)
+      when "take_turn"
+        if data.move_type == "move"
+          game.move_piece(data.q, data.r, data.to_q, data.to_r)
+        else
+          console.log("in reviced 1 data place");
+          console.log(data);
+          game.opponent_place(data.q, data.r, data.code);
+          console.log("in reviced data place");
+          console.log(data.code);
+        draw_all_ctx();
+      
+  send_turn: (move_type, code, q, r, to_q, to_r) ->
+    console.log("in send turn");
+    console.log(code);
+    data = {};
+    data.move_type = move_type;
+    data.code = code;
+    data.q = q;
+    data.r = r;
+    data.to_r = to_r
+    data.to_q = to_q
+    @perform 'take_turn', data
 
       

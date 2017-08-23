@@ -18,6 +18,7 @@ App.game = App.cable.subscriptions.create "GameChannel",
       when "take_turn"
         if !game.turn
           if data.move_type == "move"
+            console.log("game.coffe sending make move")
             game.move_piece(data.q, data.r, data.to_q, data.to_r)
           else
             game.opponent_place(data.q, data.r, data.code);

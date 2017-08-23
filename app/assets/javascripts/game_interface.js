@@ -427,6 +427,7 @@ function Game(color) {
 			
 	
 	this.opponent_place = function(q,r,p_code) {
+		console.log("opponent_place");
 		console.log(this.board);
 		this.turn = true
 		var color_for = this.color === "white" ? "black" : "white";
@@ -434,11 +435,12 @@ function Game(color) {
 		this.other_count -= 1;
 		this.other_left[piece.code] -= 1;
 		this.place_on_top(q,r,piece);
-		console.log(this.board);
 	};
 	
 	/* player is placing piece */
 	this.place_piece = function(q,r,code) {
+		console.log("place piece");
+		console.log(this.board);
 		this.turn = false
 		/* ask server if valid */
 		var piece = new Piece(code,q,r,this.color);
@@ -450,14 +452,18 @@ function Game(color) {
 	
 	/* player is moving piece */
 	this.move_piece = function(q,r,to_q,to_r) {
-		this.turn = false
+		console.log("move_piece");
+		console.log(this.board);
 		/*ask server if valid */
 		var piece = this.get_top_piece(q,r);
 		piece.q = to_q;
 		piece.r = to_r;
 		this.remove_top_piece(q,r);
 	    this.place_on_top(to_q,to_r,piece);
-		App.game.send_turn("move", -1, q, r, to_q, to_r); 
+		if (this.turn) {
+			App.game.send_turn("move", -1, q, r, to_q, to_r);
+		}
+		this.turn = this.turn ? false : true;
 	};
 	
 	/* is there a pice at these cords */

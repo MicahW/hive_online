@@ -9,6 +9,6 @@ class GameChannel < ApplicationCable::Channel
   
   def take_turn(data)
     data["action"] = "take_turn"
-    Game.make_move(current_user.id, data)
+    GameValidator.make_move(current_user.id, data)
   end
 end

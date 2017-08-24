@@ -11,6 +11,6 @@ class GameController < ApplicationController
   def create
      @active = Hash.new("")
      @friend = User.find(params[:user_id])
-     Game.start(current_user.id, @friend.id);
+     GameValidator.start(current_user.id, @friend.id);
   end
 end

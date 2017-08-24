@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :friend_request
   has_many :friend
+  has_one :game
   before_save { email.downcase! }
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

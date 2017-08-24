@@ -1,38 +1,28 @@
-class Game < ApplicationRecord
+class Game < ApplicationRecord 
+  belongs_to :user
   
-  def self.set_opponents(uid1, uid2)
-    user1 = User.find(uid1)
-    user2 = User.find(uid2)
-    user1.update_attribute(:opponent_id, uid2)
-    user2.update_attribute(:opponent_id, uid1)
-  end
-  
-  def self.get_opponent(uid)
-    user = User.find(uid)
-    user.opponent_id
-  end
-  
-  def self.start(uuid1, uuid2)
-    white, black = [uuid1, uuid2].shuffle
-
-    ActionCable.server.broadcast "player_#{white}", {action: "game_start", msg: "white"}
-    ActionCable.server.broadcast "player_#{black}", {action: "game_start", msg: "black"}
-
-    set_opponents(uuid1, uuid2)
-  end
-
-  def self.forfeit(uuid)
-    if winner = get_opponent(uid)
-      ActionCable.server.broadcast "player_#{winner}", {action: "opponent_forfeits"}
+  #returns a board object from game data
+  def get_board()
+    list = state.split(":")
+    list.each do |piece_list|
+      piece_list = piece_list.split(",")
+      piece_list[2] = piece_list[2] == 1 ? "white" : "black"
     end
+    board = GameBoard.new(turn)
+    board.fill_board(list)
   end
-
-
-  def self.make_move(uuid, data)
-    opponent = get_opponent(uuid)
-    ActionCable.server.broadcast "player_#{opponent}", data
+   
+  #take a game board object and turn in to state string, then save
+  def store_board(game_board)
+    new_state = ""
+    game_board.each do |cords, stack|
+      stack.each do |piece|
+        new_state += cords[0] + "," + cords[1] + "," 
+        new_state += piece.color == "white" ? "1" : "0" + "," + piece.type + ":"
+      end
+    end
+    update(:state => new_state, :turn => game_board.turn_number)
   end
-  
-  
+    
   
 end

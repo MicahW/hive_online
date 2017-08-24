@@ -1,5 +1,5 @@
 class Game < ApplicationRecord 
-  belongs_to :user
+  has_many :user
   
   #returns a board object from game data
   def get_board()
@@ -21,7 +21,7 @@ class Game < ApplicationRecord
         new_state += piece.color == "white" ? "1" : "0" + "," + piece.type + ":"
       end
     end
-    update(:state => new_state, :turn => game_board.turn_number)
+    update_attributes(:state => new_state, :turn => game_board.turn_number)
   end
     
   

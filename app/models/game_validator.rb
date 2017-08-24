@@ -14,7 +14,9 @@ class GameValidator
   
   def self.start(uuid1, uuid2)
     white, black = [uuid1, uuid2].shuffle
-
+    user = User.find(uuid1)
+    game = Game.find(user.game_id)
+    game.update_attribute(:white_id, white)
     ActionCable.server.broadcast "player_#{white}", {action: "game_start", msg: "white"}
     ActionCable.server.broadcast "player_#{black}", {action: "game_start", msg: "black"}
 
@@ -30,6 +32,9 @@ class GameValidator
 
   def self.make_move(uuid, data)
     opponent = get_opponent(uuid)
+    game = Game.find(User.find(uuid).game_id)
+    #if valid move
+    #ActionCable.server.broadcast "player_#{uuid}", data
     ActionCable.server.broadcast "player_#{opponent}", data
   end
   

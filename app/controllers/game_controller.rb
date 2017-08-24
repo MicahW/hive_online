@@ -10,7 +10,11 @@ class GameController < ApplicationController
   
   def create
      @active = Hash.new("")
+     @user = current_user
      @friend = User.find(params[:user_id])
-     GameValidator.start(current_user.id, @friend.id);
+     @game = Game.create(:state => "", :turn => 0)
+     @user.update_attribute(:game_id, @game.id)
+     @friend.update_attribute(:game_id, @game.id)
+     GameValidator.start(current_user.id, @friend.id)
   end
 end

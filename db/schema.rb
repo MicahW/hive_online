@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170824223314) do
+ActiveRecord::Schema.define(version: 20170824233352) do
 
   create_table "friend_requests", force: :cascade do |t|
     t.integer "from_id"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20170824223314) do
     t.datetime "updated_at", null: false
     t.string "state"
     t.integer "turn"
-    t.integer "user_id"
+    t.integer "white_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20170824223314) do
     t.integer "friend_request_id"
     t.integer "friend_id"
     t.integer "opponent_id"
+    t.integer "game_id"
     t.index ["friend_request_id"], name: "index_users_on_friend_request_id"
   end
 

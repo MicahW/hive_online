@@ -34,7 +34,7 @@ class GameValidator
     opponent = get_opponent(uuid)
     game = Game.find(User.find(uuid).game_id)
     #if valid move
-    #ActionCable.server.broadcast "player_#{uuid}", data
+    ActionCable.server.broadcast "player_#{uuid}", data
     ActionCable.server.broadcast "player_#{opponent}", data
   end
   

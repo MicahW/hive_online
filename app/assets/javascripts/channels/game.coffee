@@ -16,16 +16,26 @@ App.game = App.cable.subscriptions.create "GameChannel",
       when "game_start"
         start_game(data.msg)
       when "take_turn"
-        if !game.turn
+        if game.turn == data.color
+          game.flop_turn()
           if data.move_type == "move"
             console.log("game.coffe sending make move")
+            console.log(data.color)
+            console.log(game.color)
             game.move_piece(data.q, data.r, data.to_q, data.to_r)
+            draw_all_ctx();
           else
-            game.opponent_place(data.q, data.r, data.code);
-          draw_all_ctx();
+            console.log("game.coffe sending place move")
+            console.log(data.color)
+            console.log(game.color)
+            game.place_piece(data.q, data.r, data.code, data.color);
+            draw_all_ctx();
+          
+          
       
   send_turn: (move_type, code, q, r, to_q, to_r) ->
     data = {};
+    data.color = game.color;
     data.move_type = move_type;
     data.code = code;
     data.q = q;

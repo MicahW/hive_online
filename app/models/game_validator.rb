@@ -33,9 +33,15 @@ class GameValidator
   def self.make_move(uuid, data)
     opponent = get_opponent(uuid)
     game = Game.find(User.find(uuid).game_id)
-    #if valid move
-    ActionCable.server.broadcast "player_#{uuid}", data
-    ActionCable.server.broadcast "player_#{opponent}", data
+    correct_turn = (game.turn % 2) == 0 ? "white" : "black"
+    turn = (uuid == game.white_id) ? "white" : "black"
+    puts correct_turn
+    puts turn
+    if correct_turn == turn
+      game.update_attribute(:turn, game.turn + 1)
+      ActionCable.server.broadcast "player_#{uuid}", data
+      ActionCable.server.broadcast "player_#{opponent}", data
+    end
   end
   
   

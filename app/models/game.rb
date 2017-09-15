@@ -13,7 +13,8 @@ class Game < ApplicationRecord
   end
    
   #take a game board object and turn in to state string, then save
-  def store_board(game_board)
+  def store_board(board)
+    game_board = board.board
     new_state = ""
     game_board.each do |cords, stack|
       stack.each do |piece|

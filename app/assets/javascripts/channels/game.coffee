@@ -32,10 +32,9 @@ App.game = App.cable.subscriptions.create "GameChannel",
             draw_all_ctx();
           
           
-      
+   #move types [move, place, get_moves]   
   send_turn: (move_type, code, q, r, to_q, to_r) ->
     data = {};
-    data.color = game.color;
     data.move_type = move_type;
     data.code = code;
     data.q = q;

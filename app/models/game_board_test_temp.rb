@@ -1,17 +1,13 @@
-require 'test_helper'
+#these are game modle loading and sotring tests
 
-class GameTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
-  
-  
+
 test "test load and store" do
     game = Game.create(:state => "", :turn => 0)
     board = game.get_board
     assert(board.place_piece(2,1,"white",3),"failed to place")
     board.inc_turn
-    game.store_board board
+    board.store_board
+    puts "here"
     
     #assert(!board.place_piece(0,1,"black",4),"failed to not place")
     #assert(board.place_piece(2,2,"black",3),"failed to place")
@@ -27,16 +23,25 @@ test "test load and store" do
     
     #assert(!board.place_piece(3,0,"white",2),"failed to not place")
     #assert(board.place_piece(3,0,"white",0),"failed to place")
-end  
-  
-  
-  #some tests dont need color and tpye do just add that
+end
+    
+
+#these are game logic tests
+
+#some tests dont need color and tpye do just add that
 def add_fillers(list)
     list.each do |el|
         el.push("white").push(0)
     end
 end
 
+def assert(exp, msg)
+    unless (exp)
+        raise msg
+    else
+        puts "assertion true: #{msg}"
+    end
+end
 
 def same?(list1, list2)
   assert(
@@ -44,7 +49,7 @@ def same?(list1, list2)
          list1.size == list2.size, "incorect")
 end
 
-test "fredom of movment" do
+def test_fom()
     board = GameBoard.new
     list = add_fillers([[1,1],[1,2],[2,1],[3,0],
                         [3,-1],[2,-1],[4,-2]])
@@ -54,7 +59,7 @@ test "fredom of movment" do
     same?(board.list_fom_moves(1,1), [[2,0],[1,0],[0,1],[0,2]])
 end
 
-test "test_hive_break" do
+def test_hive_break()
     board = GameBoard.new
     list = add_fillers([[1,1],[1,2],[2,1],[3,0],
                         [3,-1],[2,-1],[4,-2],[1,0],[4,0]])
@@ -66,7 +71,7 @@ test "test_hive_break" do
     assert(!board.dose_not_break_hive(3,-1),"failed, expted false at 4,-2")
 end
 
-test "test_connected_list" do
+def test_connected_list
     board = GameBoard.new
     list = add_fillers([[1,1],[1,2],[2,1],[3,0],
                         [3,-1],[2,-1],[4,-2],[1,0],[4,0]])
@@ -75,7 +80,7 @@ test "test_connected_list" do
     same?(board.connected_list(2,1), [[2,0],[2,2],[3,1]])
 end
 
-test "test_get_all_ant_moves" do
+def test_get_all_ant_moves
     board = GameBoard.new
     list = add_fillers([[1,0],[2,1],[2,2],[3,0],[3,-1],[4,-1]])
     correct1 = [[1,-1],[2,-1],[3,-2],[4,-2],[5,-2],[5,-1],[4,0],[3,1],[1,2],
@@ -84,14 +89,14 @@ test "test_get_all_ant_moves" do
     same?(board.get_all_ant_moves(2,2), correct1)
 end
 
-test "test_get_all_spider_moves" do
+def test_get_all_spider_moves
     board = GameBoard.new
     list = add_fillers([[0,2],[1,1],[1,3]])
     board.fill_board(list)
     same?(board.get_all_spider_moves(0,2), [[2,0],[2,3],[0,4]])
 end
 
-test "test_place_piece " do
+def test_place_piece 
     board = GameBoard.new
     assert(board.place_piece(2,1,"white",3),"failed to place")
     
@@ -112,7 +117,7 @@ test "test_place_piece " do
     
 end
 
-test "test_get_all_grasshopper_moves" do
+def test_get_all_grasshopper_moves
     board = GameBoard.new
     list = add_fillers([[1,1],[0,2],[1,2],[1,3],[1,4]])
     board.fill_board(list)
@@ -121,7 +126,7 @@ test "test_get_all_grasshopper_moves" do
     same?(board.get_all_grasshopper_moves(1,2), [[1,0],[-1,2],[1,5]])
 end
 
-test "test_get_all_bee_moves" do 
+def test_get_all_bee_moves
     board = GameBoard.new
     list = add_fillers([[1,2],[0,3],[0,4],[1,4],[1,6]])
     board.fill_board(list)
@@ -130,7 +135,7 @@ test "test_get_all_bee_moves" do
     same?(board.get_all_bee_moves(1,4), [[1,3],[0,5]])
 end
 
-test "test_get_all_beatle_moves" do
+def test_get_all_beatle_moves
     board = GameBoard.new
     list = add_fillers([[1,2],[0,3],[0,4],[1,4],[1,6]])
     board.fill_board(list)
@@ -140,7 +145,7 @@ test "test_get_all_beatle_moves" do
 end
 # assert(board.move_piece(),"make move")
 # assert(!board.move_piece(),"not make move")
-test "test_make_moves" do
+def test_make_moves
     board = GameBoard.new
     list = [[6,2,2,0],[5,3,0,1],[5,4,1,1],[3,5,3,0],[4,5,4,0],[3,6,1,1],
             [4,6,3,0],[5,6,1,0],[2,7,4,1],[3,7,1,0],[3,8,0,0],[2,9,2,1]]
@@ -176,4 +181,13 @@ test "test_make_moves" do
     
 end
 
-end
+test_fom
+test_hive_break
+test_connected_list
+test_get_all_ant_moves
+test_get_all_spider_moves
+test_place_piece
+test_get_all_grasshopper_moves
+test_get_all_bee_moves
+test_get_all_beatle_moves
+test_make_moves

@@ -35,30 +35,34 @@ class GameValidator
     game = Game.find(User.find(uuid).game_id)
     correct_turn = (game.turn % 2) == 0 ? "white" : "black"
     turn = (uuid == game.white_id) ? "white" : "black"
-    
+    puts ">> in make move"
     if correct_turn == turn
-      game_board = board.get_board()
+      puts ">> correct turn"
+      game_board = game.get_board()
+      puts ">> get game board complete"
       valid_turn = true
       
       if data["move_type"] == "move"
         valid_turn = game_board.move_piece(
           data["q"],data["r"],data["to_q"],data["to_r"],correct_turn)
       else if data["move_type"] == "place"
-        valid_turn = game_baord.place_piece(
+        valid_turn = game_board.place_piece(
           data["q"],data["r"],correct_turn,data["code"])
       end
+      
+      puts ">> valid turn = #{valid_turn}"
       
       if valid_turn
         data["color"] = correct_turn
         game.update_attribute(:turn, game.turn + 1)
         game.store_board(game_board)
         
+        ">> board stored"
+        
         ActionCable.server.broadcast "player_#{uuid}", data
         ActionCable.server.broadcast "player_#{opponent}", data
       end
     end
   end
-  
-  
-  
+end
 end

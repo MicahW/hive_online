@@ -41,9 +41,11 @@ class GameBoard
     def print_board
       print "game object turn: #{@turn_number} state: "
       @board.each do |cord, pieces|
+        if pieces != nil
         pieces.each do |piece|
           print("#{cord[0]},#{cord[1]},#{piece.color},#{piece.type}:")
         end
+      end
       end
       puts ""
     end

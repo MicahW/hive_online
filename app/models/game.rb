@@ -30,13 +30,15 @@ class Game < ApplicationRecord
     game_board = board.get_board
     new_state = ""
     game_board.each do |cords, stack|
-      stack.each do |piece|
-        new_state += cords[0].to_s + "," + cords[1].to_s + "," 
+      if stack != nil
+        stack.each do |piece|
+          new_state += cords[0].to_s + "," + cords[1].to_s + "," 
         
-        new_state += "1" if piece.color == "white"
-        new_state += "0" if piece.color == "black"
+          new_state += "1" if piece.color == "white"
+          new_state += "0" if piece.color == "black"
         
-        new_state += "," + piece.type.to_s + ":"
+          new_state += "," + piece.type.to_s + ":"
+        end
       end
     end
     puts "storing board, state: #{new_state}"

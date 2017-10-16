@@ -4,8 +4,76 @@ class GameTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
+  
+test "test load and store moves" do
+    puts "-----------TESTING MAKE MOVES---------------------"
+    board = GameBoard.new
+    list = [[6,2,2,0],[5,3,0,1],[5,4,1,1],[3,5,3,0],[4,5,4,0],[3,6,1,1],
+            [4,6,3,0],[5,6,1,0],[2,7,4,1],[3,7,1,0],[3,8,0,0],[2,9,2,1]]
+    list.each do |i|
+        i[3] = (i[3] == 0) ? "white" : "black"
+    end
+    list.each do |i|
+        x = i[3]
+        i[3] = i[2]
+        i[2] = x
+    end
+    board.fill_board(list)
+  
+    game = Game.create(:state => "", :turn => 0)
+    game.store_board board
+  
+  
+    board = game.get_board()
+    board.print_board
+    assert(!board.move_piece(5,4,3,4,"black"),"not moving")
+    assert(!board.move_piece(6,2,4,4,"black"),"not make move")
+     board.print_board
+    assert(board.move_piece(6,2,4,4,"white"),"make move")
+    board.print_board
+    game.store_board board
+  
+    board = game.get_board()
+    assert(board.move_piece(4,4,6,2,"white"),"make move")
+    game.store_board board
+  
+    board = game.get_board()
+    assert(!board.move_piece(3,7,4,7,"white"),"not make move")
+    assert(board.move_piece(3,5,1,8,"white"),"make move")
+    game.store_board board
+  
+    board = game.get_board()
+    assert(!board.move_piece(5,6,2,8,"white"),"not make move")
+    assert(board.move_piece(5,6,1,9,"white"),"make move")
+    game.store_board board
+  
+    board = game.get_board()
+    assert(board.move_piece(3,8,4,7,"white"),"make move")
+    game.store_board board
+  
+    board = game.get_board()
+    assert(board.move_piece(6,2,4,4,"white"),"make move")
+    game.store_board board
+  
+    board = game.get_board()
+    assert(board.move_piece(5,4,3,8,"black"),"make move")
+    game.store_board board
+  
+    board = game.get_board()
+    assert(board.place_piece(5,5,"white",4),"add beatle")
+    game.store_board board
+  
+    board = game.get_board()
+    assert(board.move_piece(5,5,4,5,"white"),"make move")
+    game.store_board board
+  
+    board = game.get_board()
+    assert(board.move_piece(4,5,4,6,"white"), "beatl move on top")
+    game.store_board board
+    
+end
 
-test "test load and store" do
+test "test load and store placment" do
     game = Game.create(:state => "", :turn => 0)
     board = game.get_board
     board.print_board

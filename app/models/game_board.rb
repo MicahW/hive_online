@@ -25,9 +25,6 @@ class GameBoard
         @left["black"] = [1,3,3,2,2]
     end
   
-    def inc_turn()
-      @turn_number = @turn_number + 1
-    end
     
     def set_turn(turn)
       @turn_number = turn
@@ -40,6 +37,17 @@ class GameBoard
     def get_board()
       return @board
     end
+  
+    def print_board
+      print "game object turn: #{@turn_number} state: "
+      @board.each do |cord, pieces|
+        pieces.each do |piece|
+          print("#{cord[0]},#{cord[1]},#{piece.color},#{piece.type}:")
+        end
+      end
+      puts ""
+    end
+        
     
     
     #place a piece true, if valid, false if otherwise
@@ -126,6 +134,7 @@ class GameBoard
         #the requested move is a place that piece can go
         
         place_on_top(to_q,to_r,remove_top_piece(q,r))
+        @turn_number += 1
         return true
     end
         
@@ -352,6 +361,7 @@ class GameBoard
         list.each do |el|
             piece = Piece.new(el[2],el[3])
             place_on_top(el[0],el[1],piece)
+            @left[piece.color][piece.type] -= 1
         end
         
     end

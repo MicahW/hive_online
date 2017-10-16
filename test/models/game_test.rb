@@ -4,30 +4,51 @@ class GameTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
-  
-  
+
 test "test load and store" do
     game = Game.create(:state => "", :turn => 0)
     board = game.get_board
+    board.print_board
     assert(board.place_piece(2,1,"white",3),"failed to place")
-    board.inc_turn
+    board.print_board
     game.store_board board
     
-    #assert(!board.place_piece(0,1,"black",4),"failed to not place")
-    #assert(board.place_piece(2,2,"black",3),"failed to place")
-    
-    #assert(!board.place_piece(1,2,"white",4),"failed to not place")
-    #assert(board.place_piece(1,1,"white",3),"failed to place")
-    
-    #assert(!board.place_piece(0,1,"black",4),"failed to not place")
-    #assert(board.place_piece(2,3,"black",3),"failed to place")
-    
-    #assert(!board.place_piece(2,0,"white",3),"failed to not place")
-    #assert(board.place_piece(2,0,"white",2),"failed to place")
-    
-    #assert(!board.place_piece(3,0,"white",2),"failed to not place")
-    #assert(board.place_piece(3,0,"white",0),"failed to place")
+    board = game.get_board
+    board.print_board
+    assert(!board.place_piece(0,1,"black",4),"failed to not place")
+    assert(board.place_piece(2,2,"black",3),"failed to place")
+    board.print_board
+    game.store_board board
+  
+    board = game.get_board
+    board.print_board
+    assert(!board.place_piece(1,2,"white",4),"failed to not place")
+    assert(board.place_piece(1,1,"white",3),"failed to place")
+    board.print_board
+    game.store_board board
+  
+    board = game.get_board
+    board.print_board
+    assert(!board.place_piece(0,1,"black",4),"failed to not place")
+    assert(board.place_piece(2,3,"black",3),"failed to place")
+    board.print_board
+    game.store_board board
+  
+    board = game.get_board
+    board.print_board
+    assert(!board.place_piece(2,0,"white",3),"failed to not place")
+    assert(board.place_piece(2,0,"white",2),"failed to place")
+    board.print_board
+    game.store_board board
+  
+    board = game.get_board
+    board.print_board
+    assert(!board.place_piece(3,0,"white",2),"failed to not place")
+    assert(board.place_piece(3,0,"white",0),"failed to place")
+    board.print_board
 end  
+
+
   
   
   #some tests dont need color and tpye do just add that
@@ -95,6 +116,7 @@ test "test_place_piece " do
     board = GameBoard.new
     assert(board.place_piece(2,1,"white",3),"failed to place")
     
+    
     assert(!board.place_piece(0,1,"black",4),"failed to not place")
     assert(board.place_piece(2,2,"black",3),"failed to place")
     
@@ -103,7 +125,8 @@ test "test_place_piece " do
     
     assert(!board.place_piece(0,1,"black",4),"failed to not place")
     assert(board.place_piece(2,3,"black",3),"failed to place")
-    
+  
+    board.print_board
     assert(!board.place_piece(2,0,"white",3),"failed to not place")
     assert(board.place_piece(2,0,"white",2),"failed to place")
     

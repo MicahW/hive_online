@@ -103,16 +103,22 @@ class GameBoard
     
     #code{ 0:bee, 1:ant, 2:grasshopper, 3:spider, 4:beatle}
     def move_piece(q,r,to_q,to_r,color)
+      
+        puts "in game_board move_piece"
+      
         piece = get_top_piece(q,r)
         
-        
+        puts "piece is: #{piece}"
+      
         if piece == nil or piece.color != color or 
-            (!dose_not_break_hive(q,r) and @board[[q,r]].size == 1)
+            (!dose_not_break_hive(q,r) and @board[[q,r]].size == 1) or
+            @left[color][0] != 0
+            puts "conditions failed, invliad move"
             return false
         end
         
         
-        
+        puts "conditions good, testing piece moving "
         # now get a list of all the places that peice can move
         moves = []
         case piece.type
@@ -128,8 +134,9 @@ class GameBoard
                moves = get_all_beatle_moves(q,r)
         end
         
-        
+        puts "completed test"
         return false if !moves.include?([to_q,to_r])
+        puts "test passed"
 
         
         #now good to go, there is a piece there, it is thats pieces turn
@@ -137,6 +144,7 @@ class GameBoard
         
         place_on_top(to_q,to_r,remove_top_piece(q,r))
         @turn_number += 1
+        puts "all good to go"
         return true
     end
         

@@ -6,7 +6,6 @@ class GameTest < ActiveSupport::TestCase
   # end
   
 test "test load and store moves" do
-    puts "-----------TESTING MAKE MOVES---------------------"
     board = GameBoard.new
     list = [[6,2,2,0],[5,3,0,1],[5,4,1,1],[3,5,3,0],[4,5,4,0],[3,6,1,1],
             [4,6,3,0],[5,6,1,0],[2,7,4,1],[3,7,1,0],[3,8,0,0],[2,9,2,1]]
@@ -25,12 +24,12 @@ test "test load and store moves" do
   
   
     board = game.get_board()
-    board.print_board
+     
     assert(!board.move_piece(5,4,3,4,"black"),"not moving")
     assert(!board.move_piece(6,2,4,4,"black"),"not make move")
-     board.print_board
+      
     assert(board.move_piece(6,2,4,4,"white"),"make move")
-    board.print_board
+     
     game.store_board board
   
     board = game.get_board()
@@ -76,44 +75,44 @@ end
 test "test load and store placment" do
     game = Game.create(:state => "", :turn => 0)
     board = game.get_board
-    board.print_board
+     
     assert(board.place_piece(2,1,"white",3),"failed to place")
-    board.print_board
+     
     game.store_board board
     
     board = game.get_board
-    board.print_board
+     
     assert(!board.place_piece(0,1,"black",4),"failed to not place")
     assert(board.place_piece(2,2,"black",3),"failed to place")
-    board.print_board
+     
     game.store_board board
   
     board = game.get_board
-    board.print_board
+     
     assert(!board.place_piece(1,2,"white",4),"failed to not place")
     assert(board.place_piece(1,1,"white",3),"failed to place")
-    board.print_board
+     
     game.store_board board
   
     board = game.get_board
-    board.print_board
+     
     assert(!board.place_piece(0,1,"black",4),"failed to not place")
     assert(board.place_piece(2,3,"black",3),"failed to place")
-    board.print_board
+     
     game.store_board board
   
     board = game.get_board
-    board.print_board
+     
     assert(!board.place_piece(2,0,"white",3),"failed to not place")
     assert(board.place_piece(2,0,"white",2),"failed to place")
-    board.print_board
+     
     game.store_board board
   
     board = game.get_board
-    board.print_board
+     
     assert(!board.place_piece(3,0,"white",2),"failed to not place")
     assert(board.place_piece(3,0,"white",0),"failed to place")
-    board.print_board
+     
 end  
 
 
@@ -194,7 +193,7 @@ test "test_place_piece " do
     assert(!board.place_piece(0,1,"black",4),"failed to not place")
     assert(board.place_piece(2,3,"black",3),"failed to place")
   
-    board.print_board
+     
     assert(!board.place_piece(2,0,"white",3),"failed to not place")
     assert(board.place_piece(2,0,"white",2),"failed to place")
     

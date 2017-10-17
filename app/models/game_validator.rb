@@ -45,7 +45,7 @@ class GameValidator
       if data["move_type"] == "move"
         valid_turn = game_board.move_piece(
           data["q"],data["r"],data["to_q"],data["to_r"],correct_turn)
-      else if data["move_type"] == "place"
+      elsif data["move_type"] == "place"
         valid_turn = game_board.place_piece(
           data["q"],data["r"],correct_turn,data["code"])
       end
@@ -57,12 +57,11 @@ class GameValidator
         game.update_attribute(:turn, game.turn + 1)
         game.store_board(game_board)
         
-        ">> board stored"
+        puts ">> board stored"
         
         ActionCable.server.broadcast "player_#{uuid}", data
         ActionCable.server.broadcast "player_#{opponent}", data
       end
     end
   end
-end
 end

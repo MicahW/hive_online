@@ -3,7 +3,7 @@ class Game < ApplicationRecord
   
   #returns a board object from game data
   def get_board()
-    puts "loading board, state: #{state}"
+    #puts "loading board, state: #{state}"
     list = state.split(":")
     load_list = []
     list.each do |piece_list|
@@ -41,8 +41,8 @@ class Game < ApplicationRecord
         end
       end
     end
-    puts "storing board, state: #{new_state}"
-    puts ""
+    #puts "storing board, state: #{new_state}"
+    #puts ""
     update_attributes(:state => new_state, :turn => board.get_turn)
   end
     

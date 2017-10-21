@@ -82,43 +82,15 @@ class GameBoard
         
     end
     
-    def get_moves(q,r)
-        piece = @board.get_to_piece(q,r)
-        return nil if !piece
-        moves = []
-        case piece.type
-            when 0
-              moves = get_all_bee_moves(q,r)
-            when 1
-              moves = get_all_ant_moves(q,r)
-            when 2
-              moves = get_all_grasshopper_moves(q,r)
-            when 3
-              moves = get_all_spider_moves(q,r)
-            when 4
-               moves = get_all_beatle_moves(q,r)
-        end
-        return mvoes
-    end
-    
-    #code{ 0:bee, 1:ant, 2:grasshopper, 3:spider, 4:beatle}
-    def move_piece(q,r,to_q,to_r,color)
-      
-        puts "in game_board move_piece"
-      
-        piece = get_top_piece(q,r)
-        
-        puts "piece is: #{piece}"
-      
+    def get_moves(q,r,color)
+        piece = get_top_piece(q,r)    
         if piece == nil or piece.color != color or 
             (!dose_not_break_hive(q,r) and @board[[q,r]].size == 1) or
             @left[color][0] != 0
-            puts "conditions failed, invliad move"
+
             return false
-        end
-        
-        
-        puts "conditions good, testing piece moving "
+        end     
+
         # now get a list of all the places that peice can move
         moves = []
         case piece.type
@@ -134,17 +106,51 @@ class GameBoard
                moves = get_all_beatle_moves(q,r)
         end
         
-        puts "completed test"
         return false if !moves.include?([to_q,to_r])
-        puts "test passed"
 
-        
         #now good to go, there is a piece there, it is thats pieces turn
         #the requested move is a place that piece can go
         
         place_on_top(to_q,to_r,remove_top_piece(q,r))
         @turn_number += 1
-        puts "all good to go"
+
+        return true
+    end
+    
+    #code{ 0:bee, 1:ant, 2:grasshopper, 3:spider, 4:beatle}
+    def move_piece(q,r,to_q,to_r,color)
+
+        piece = get_top_piece(q,r)    
+        if piece == nil or piece.color != color or 
+            (!dose_not_break_hive(q,r) and @board[[q,r]].size == 1) or
+            @left[color][0] != 0
+
+            return false
+        end     
+
+        # now get a list of all the places that peice can move
+        moves = []
+        case piece.type
+            when 0
+              moves = get_all_bee_moves(q,r)
+            when 1
+              moves = get_all_ant_moves(q,r)
+            when 2
+              moves = get_all_grasshopper_moves(q,r)
+            when 3
+              moves = get_all_spider_moves(q,r)
+            when 4
+               moves = get_all_beatle_moves(q,r)
+        end
+        
+        return false if !moves.include?([to_q,to_r])
+
+        #now good to go, there is a piece there, it is thats pieces turn
+        #the requested move is a place that piece can go
+        
+        place_on_top(to_q,to_r,remove_top_piece(q,r))
+        @turn_number += 1
+
         return true
     end
         

@@ -288,7 +288,7 @@ c.addEventListener('mouseup', function(event) {
 			Qselect = null;
 			Rselect = null;
 		} else {	
-			move_list = game.get_moves(q,r);
+			move_list.push([q,r]);
 			Qselect = q;
 			Rselect = r;
 		}

@@ -33,6 +33,7 @@ class GameValidator
   def self.make_move(uuid, data)
     opponent = get_opponent(uuid)
     game = Game.find(User.find(uuid).game_id)
+    return false if !game
     correct_turn = (game.turn % 2) == 0 ? "white" : "black"
     turn = (uuid == game.white_id) ? "white" : "black"
     puts ">> in make move"
@@ -61,7 +62,7 @@ class GameValidator
         if game_board.is_winner != "none"
           ActionCable.server.broadcast "player_#{uuid}", {action: "player_won", winner: game_board.is_winner}
           ActionCable.server.broadcast "player_#{opponent}", {action: "player_won", winner: game_board.is_winner}
-          Game.destory(game.id)
+          Game.destroy(game.id)
         end
       end
     end

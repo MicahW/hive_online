@@ -13,6 +13,9 @@ App.game = App.cable.subscriptions.create "GameChannel",
 
   received: (data) ->
     switch data.action
+      when "player_won"		
+        game.set_winner(data.winner);
+        draw_all_ctx();
       when "game_start"
         start_game(data.msg)
       when "take_turn"
@@ -30,6 +33,9 @@ App.game = App.cable.subscriptions.create "GameChannel",
             console.log(game.color)
             game.place_piece(data.q, data.r, data.code, data.color);
             draw_all_ctx();
+	  
+	  
+		
           
           
    #move types [move, place, get_moves]   

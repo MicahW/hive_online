@@ -87,12 +87,17 @@ function draw_all_ctx() {
 
 /* draw all pies to screen */
 function draw_all(ctx, move_list) {
-	
 	ctx.clearRect(0, 0, width, height);
 	other_ctx.clearRect(0, 0, width, height);
 	your_ctx.clearRect(0, 0, width, height);
 
 	ctx.beginPath();
+	ctx.font = "50px Arial";
+	if (game.winner == "none") {
+		ctx.strokeText(game.turn,10,50);
+	} else {
+		ctx.strokeText(game.winner.concat(" won!"),10,50);
+	}
 	
 	/* draw each level at a time, keep a list of aboves */
 	var level_list = game.board_list;
@@ -376,9 +381,14 @@ function Game(color) {
 	this.your_left = [1,3,3,2,2];
 	this.other_left = [1,3,3,2,2];
 	
+	this.winner = "none"
 	this.turn = "white"
 	this.color = color;
 	this.other_color = color == "black" ? "white" : "black";
+	
+	this.set_winner = function(who_won) {
+		this.winner = who_won;
+	}
 	
 	this.flop_turn = function() {
 		console.log("-------------IN FLOP TURN__________");

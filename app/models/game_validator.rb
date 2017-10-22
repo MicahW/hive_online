@@ -55,13 +55,41 @@ class GameValidator
       if valid_turn
         data["color"] = correct_turn
         game.update_attribute(:turn, game.turn + 1)
-        game.store_board(game_board)
-        
-        puts ">> board stored"
-        
+        game.store_board(game_board) 
         ActionCable.server.broadcast "player_#{uuid}", data
         ActionCable.server.broadcast "player_#{opponent}", data
+        if game_board.is_winner != "none"
+          ActionCable.server.broadcast "player_#{uuid}", {action: "player_won", winner: game_board.is_winner}
+          ActionCable.server.broadcast "player_#{opponent}", {action: "player_won", winner: game_board.is_winner}
+          Game.destory(game.id)
+        end
       end
     end
   end
 end
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

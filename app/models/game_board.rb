@@ -49,8 +49,28 @@ class GameBoard
       end
       puts ""
     end
-        
-    
+
+    #returns "white", "black", "both", or "none"
+    def is_winner()
+      white_won = false
+      black_won = false
+      
+      @board.each do |cord, piece_list|
+        if piece_list != nil and piece_list[0].type == 0
+          piece = piece_list[0]
+          if piece.color == "black"
+            white_won = (list_nieghbors(cord[0],cord[1]).size == 6)
+          elsif piece.color == "white"
+            black_won = (list_nieghbors(cord[0],cord[1]).size == 6)
+          end
+        end
+      end
+      return "white" if (white_won and !black_won)
+      return "black" if (black_won and !white_won)
+      return "both" if (white_won and black_won)
+      return "none"
+    end
+          
     
     #place a piece true, if valid, false if otherwise
     def place_piece(q,r,color,type)

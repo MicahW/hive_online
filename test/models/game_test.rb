@@ -5,6 +5,30 @@ class GameTest < ActiveSupport::TestCase
   #   assert true
   # end
   
+test "test winner" do
+    board = GameBoard.new
+    list = add_fillers([[3,5],[2,6],[4,5],[2,7],[4,7],[3,8]])
+    list.push([3,6,"white",0],[3,7,"black",0])
+    board.fill_board(list)
+    assert_equal("none",board.is_winner,"testing no winner")
+
+    board.fill_board [[4,6,"black",1]]
+    assert_equal("black",board.is_winner,"tesing black won")
+
+    board.fill_board [[2,8,"white",1]]
+    assert_equal("both",board.is_winner,"testing both won")
+    
+    list2 = []
+    board2 = GameBoard.new
+    list2 = add_fillers([[3,5],[2,6],[4,5],[2,7],[4,7],[3,8],[3,6],[4,6],[2,8],[4,8]])
+    list2.push([3,7,"black",0])
+    board2.fill_board(list2)
+    assert_equal("white",board2.is_winner,"testing white won")
+end
+    
+    
+      
+  
 test "test load and store moves" do
     board = GameBoard.new
     list = [[6,2,2,0],[5,3,0,1],[5,4,1,1],[3,5,3,0],[4,5,4,0],[3,6,1,1],
@@ -121,7 +145,7 @@ end
   #some tests dont need color and tpye do just add that
 def add_fillers(list)
     list.each do |el|
-        el.push("white").push(0)
+        el.push("white").push(1)
     end
 end
 
@@ -230,6 +254,8 @@ test "test_get_all_beatle_moves" do
 end
 # assert(board.move_piece(),"make move")
 # assert(!board.move_piece(),"not make move")
+#also, prevoius bug with makeing moves breaking is_winner, 
+#testing to make sure it dose not crash
 test "test_make_moves" do
     board = GameBoard.new
     list = [[6,2,2,0],[5,3,0,1],[5,4,1,1],[3,5,3,0],[4,5,4,0],[3,6,1,1],
@@ -244,6 +270,7 @@ test "test_make_moves" do
     end
     board.fill_board(list)
     assert(!board.move_piece(5,4,3,4,"black"),"not moving")
+    board.is_winner
     assert(!board.move_piece(6,2,4,4,"black"),"not make move")
     assert(board.move_piece(6,2,4,4,"white"),"make move")
     assert(board.move_piece(4,4,6,2,"white"),"make move")
@@ -251,18 +278,22 @@ test "test_make_moves" do
     assert(board.move_piece(3,5,1,8,"white"),"make move")
     assert(!board.move_piece(5,6,2,8,"white"),"not make move")
     assert(board.move_piece(5,6,1,9,"white"),"make move")
+    board.is_winner
     assert(board.move_piece(3,8,4,7,"white"),"make move")
     assert(board.move_piece(6,2,4,4,"white"),"make move")
     assert(board.move_piece(5,4,3,8,"black"),"make move")
     assert(board.place_piece(5,5,"white",4),"add beatle")
+    board.is_winner
     assert(board.move_piece(5,5,4,5,"white"),"make move")
     assert(board.move_piece(4,5,4,6,"white"), "beatl move on top")
     assert(board.move_piece(4,6,3,7,"white"),"make move")
     assert(board.move_piece(4,6,4,8,"white"),"make move")
+    board.is_winner
     assert(board.move_piece(2,7,3,7,"black"),"make move")
     assert(board.move_piece(3,7,4,7,"black"),"make move")
     assert(board.move_piece(4,7,4,6,"black"),"make move")
     assert(board.move_piece(3,7,2,8,"white"),"make move")
+    board.is_winner
     
 end
 

@@ -4,7 +4,7 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    Game.forfeit(current_user.id)
+    GameValidator.forfeit(current_user.id)
   end
   
   def take_turn(data)

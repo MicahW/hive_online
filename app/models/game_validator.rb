@@ -23,10 +23,11 @@ class GameValidator
     set_opponents(uuid1, uuid2)
   end
 
-  def self.forfeit(uuid)
-    if winner = get_opponent(uid)
-      ActionCable.server.broadcast "player_#{winner}", {action: "opponent_forfeits"}
-    end
+  def self.forfeit(uid)
+     winner = get_opponent(uid)
+     ActionCable.server.broadcast "player_#{winner}", {action: "player_won", winner: "you"}
+     game = Game.find(User.find(uid).game_id)
+     Game.destroy(game.id)
   end
 
 
